@@ -1,0 +1,44 @@
+import 'package:irrigation/models/response/group_no_sensor_response.dart';
+import 'package:irrigation/models/response/irregation_schedule_response.dart';
+import 'package:irrigation/models/sensor_data.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'sensor_response.g.dart';
+
+@JsonSerializable()
+class SensorResponse {
+  int sensorId;
+  String name;
+  double latitude;
+  double longitude;
+  String mac;
+  GroupNoSensorResponse? group;
+  SensorData sensorData;
+  double humidityThreshold;
+  DateTime? lastActive;
+  double? waterUsageLast;
+  double? waterUsageAllTime;
+  List<IrregationScheduleResponse> irregationSchedules;
+  int? groupId;
+  bool state;
+
+  SensorResponse(
+      {required this.sensorId,
+      required this.name,
+      required this.latitude,
+      required this.longitude,
+      required this.mac,
+      this.group,
+      required this.sensorData,
+      required this.humidityThreshold,
+      this.lastActive,
+      this.waterUsageLast,
+      this.waterUsageAllTime,
+      required this.irregationSchedules,
+      this.groupId,
+      required this.state});
+
+  factory SensorResponse.fromJson(Map<String, dynamic> json) =>
+      _$SensorResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SensorResponseToJson(this);
+}
