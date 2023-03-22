@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:irrigation/feature/home/widget/map_widget.dart';
 import 'package:irrigation/feature/home/widget/sensor_delete_dialog.dart';
 import 'package:irrigation/feature/home/widget/valve_list_item_widget.dart';
-import 'package:irrigation/feature/map/page/map_page.dart';
 import 'package:irrigation/feature/sensor_add/page/sensor_add_page.dart';
 import 'package:irrigation/feature/sensor_detail/page/sensor_detail_page.dart';
 import 'package:irrigation/feature/widget/no_internet_widget.dart';

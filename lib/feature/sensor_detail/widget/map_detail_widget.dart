@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
@@ -15,10 +17,75 @@ class MapDetailWidget extends StatefulWidget {
 }
 
 class _MapDetailWidgetState extends State<MapDetailWidget> {
+  List<Marker> markers = [];
+
+  List<Marker> getMarkers() {
+    List<Marker> _markers = [];
+    if (mounted) {
+      SensorResponse? sensorProvided =
+          Provider.of<SensorProvider>(context, listen: false)
+              .getSensor(widget.sensor.mac);
+
+      _markers.add(Marker(
+          point: lat_lng.LatLng(
+            sensorProvided!.latitude,
+            sensorProvided.longitude,
+          ),
+          builder: (context) => Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(
+                    Icons.location_pin,
+                    color: Theme.of(context).indicatorColor,
+                    size: 40,
+                  ),
+                  Positioned(
+                    left: 20,
+                    child: Icon(
+                      Icons.circle,
+                      size: 15,
+                      color: !checkEnabled(sensorProvided)
+                          ? Colors.grey
+                          : sensorProvided.state
+                              ? Colors.green
+                              : Colors.orange,
+                    ),
+                  ),
+                ],
+              )));
+    }
+    return _markers;
+  }
+
+  @override
+  void initState() {
+    markers = getMarkers();
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (mounted) {
+        Provider.of<SensorProvider>(context, listen: false).refreshList();
+        markers.clear();
+        markers = getMarkers();
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
+
+  bool checkEnabled(SensorResponse sensor) {
+    if (sensor.lastActive == null) {
+      return false;
+    } else if (DateTime.now().difference(sensor.lastActive!).inHours > 24) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SensorResponse? sensorProvided =
         Provider.of<SensorProvider>(context).getSensor(widget.sensor.mac);
+
     return Container(
       padding: const EdgeInsets.all(1),
       width: double.maxFinite,
@@ -48,19 +115,7 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
             ),
             MarkerLayer(
               rotate: true,
-              markers: [
-                Marker(
-                  point: lat_lng.LatLng(
-                    sensorProvided.latitude,
-                    sensorProvided.longitude,
-                  ),
-                  builder: (context) => Icon(
-                    Icons.location_pin,
-                    color: Theme.of(context).indicatorColor,
-                    size: 40,
-                  ),
-                ),
-              ],
+              markers: markers,
             ),
           ],
         ),

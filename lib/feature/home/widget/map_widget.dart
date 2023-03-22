@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:irrigation/constants/map_constants.dart';
 import 'package:irrigation/feature/map/page/map_page.dart';
+import 'package:irrigation/feature/sensor_detail/page/sensor_detail_page.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({super.key});
+  const MapWidget({super.key, this.fullScreen = false});
+  final bool fullScreen;
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -16,28 +21,83 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   late MapController _mapController;
+  bool satelite = false;
+  late LatLng currentLocation;
+  List<Marker> markers = [];
+
+  bool checkEnabled(SensorResponse sensor) {
+    if (sensor.lastActive == null) {
+      return false;
+    } else if (DateTime.now().difference(sensor.lastActive!).inHours > 24) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   List<Marker> getMarkers() {
-    final sensorProvider = Provider.of<SensorProvider>(context);
     List<Marker> markers = [];
-    for (SensorResponse sensorResponse in sensorProvider.getSensors) {
-      markers.add(Marker(
-        point: LatLng(sensorResponse.latitude, sensorResponse.longitude),
-        builder: (context) {
-          return Icon(
-            Icons.location_pin,
-            color: Theme.of(context).indicatorColor,
-            size: 30,
-          );
-        },
-      ));
+    if (mounted) {
+      final sensorProvider =
+          Provider.of<SensorProvider>(context, listen: false);
+      for (SensorResponse sensorResponse in sensorProvider.getSensors) {
+        markers.add(Marker(
+          point: LatLng(sensorResponse.latitude, sensorResponse.longitude),
+          builder: (context) {
+            return GestureDetector(
+                onTap: widget.fullScreen
+                    ? () =>
+                        Get.to(() => SensorDetailPage(sensor: sensorResponse))
+                    : null,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Icon(
+                      Icons.location_pin,
+                      color: Theme.of(context).indicatorColor,
+                      size: !widget.fullScreen ? 30 : 40,
+                    ),
+                    Positioned(
+                      left: 20,
+                      child: Icon(
+                        Icons.circle,
+                        size: 15,
+                        color: !checkEnabled(sensorResponse)
+                            ? Colors.grey
+                            : sensorResponse.state
+                                ? Colors.green
+                                : Colors.orange,
+                      ),
+                    ),
+                  ],
+                )
+
+                /*Icon(
+              Icons.location_pin,
+              color: Theme.of(context).indicatorColor,
+              size: !widget.fullScreen ? 30 : 40,
+            ),*/
+                );
+          },
+        ));
+      }
     }
+
     return markers;
   }
 
   @override
   void initState() {
     _mapController = MapController();
+    markers = getMarkers();
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (mounted) {
+        Provider.of<SensorProvider>(context, listen: false).refreshList();
+        markers.clear();
+        markers = getMarkers();
+        setState(() {});
+      }
+    });
     super.initState();
   }
 
@@ -60,26 +120,49 @@ class _MapWidgetState extends State<MapWidget> {
 
     return Consumer<SensorProvider>(
       builder: (context, value, child) {
-        return FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            onTap: (tapPosition, point) => Get.to(() => const MapPage()),
-            bounds: bounds,
-          ),
+        return Stack(
           children: [
-            TileLayer(
-              //urlTemplate: 'https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}',
-              //https://apidocs.geoapify.com/docs/maps/map-tiles/#about
-              urlTemplate: MediaQuery.of(context).platformBrightness ==
-                      Brightness.dark
-                  ? 'https://maps.geoapify.com/v1/tile/dark-matter-yellow-roads/{z}/{x}/{y}.png?&apiKey=9b38379eb2b14acbb41d6fe85542788f'
-                  : 'https://maps.geoapify.com/v1/tile/osm-liberty/{z}/{x}/{y}.png?&apiKey=9b38379eb2b14acbb41d6fe85542788f',
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                onTap: (tapPosition, point) => Get.to(() => const MapPage()),
+                bounds: bounds,
+              ),
+              children: [
+                TileLayer(
+                  //urlTemplate: 'https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}',
+                  //https://apidocs.geoapify.com/docs/maps/map-tiles/#about
+                  urlTemplate: satelite
+                      ? MapConstants.sateliteMap
+                      : MediaQuery.of(context).platformBrightness ==
+                              Brightness.dark
+                          ? MapConstants.darkMap
+                          : MapConstants.lightMap,
 
-              userAgentPackageName: 'com.example.app',
+                  userAgentPackageName: 'com.example.app',
+                ),
+                MarkerLayer(
+                  rotate: true,
+                  markers: markers,
+                ),
+              ],
             ),
-            MarkerLayer(
-              markers: getMarkers(),
-            ),
+            widget.fullScreen
+                ? Positioned(
+                    bottom: 30,
+                    right: 15,
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).cardColor,
+                      child: IconButton(
+                        icon: const Icon(Icons.layers),
+                        onPressed: () {
+                          satelite = !satelite;
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         );
       },

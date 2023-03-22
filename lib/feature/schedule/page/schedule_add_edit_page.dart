@@ -161,7 +161,9 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                         success = await addSchedule();
                       }
                       if (success) {
-                        Navigator.of(context).pop();
+                        if (mounted) {
+                          Navigator.of(context).pop();
+                        }
                       }
                     }
                   : null,

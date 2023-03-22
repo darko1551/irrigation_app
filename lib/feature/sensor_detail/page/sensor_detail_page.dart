@@ -79,7 +79,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                     //CONNECTION
                     ConnectionInfoWidget(
                         enabled: checkEnabled(sensorProvided),
-                        sensor: widget.sensor),
+                        sensor: sensorProvided),
                     //ACTIONS
                     const Text("Device actions"),
                     const SizedBox(height: 8),

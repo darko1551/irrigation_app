@@ -12,8 +12,12 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: MapWidget(),
+      appBar: AppBar(
+        title: const Text("Map"),
+      ),
+      body: const MapWidget(
+        fullScreen: true,
+      ),
     );
   }
 }
