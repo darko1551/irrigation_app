@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:irrigation/feature/home/widget/tile_info_column_widget.dart';
+import 'package:irrigation/models/response/irregation_schedule_response.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/feature/home/widget/tile_info_row_widget.dart';
+import 'package:irrigation/provider/sensor_provider.dart';
+import 'package:provider/provider.dart';
 
 class ValveListItem extends StatefulWidget {
   const ValveListItem({super.key, required this.sensor});
@@ -144,22 +147,32 @@ class _ValveListItemState extends State<ValveListItem> {
 
   void _getTime() {
     List<DateTime> irrigarionSchedules = [];
-
     if (widget.sensor.irregationSchedules.isNotEmpty) {
-      DateTime dateFrom = widget.sensor.irregationSchedules[0].dateFrom;
-      TimeOfDay time = widget.sensor.irregationSchedules[0].time;
-      DateTime dateTo = widget.sensor.irregationSchedules[0].dateTo;
+      for (IrregationScheduleResponse schedule
+          in widget.sensor.irregationSchedules) {
+        if (schedule.doNotIrregate) {
+          DateTime dateFrom = schedule.dateFrom;
+          TimeOfDay time = schedule.time;
+          DateTime dateTo = schedule.dateTo;
 
-      var dateTimeFrom = DateTime(
-          dateFrom.year, dateFrom.month, dateFrom.day, time.hour, time.minute);
-      var dateTimeTo = DateTime(
-          dateTo.year, dateTo.month, dateTo.day, time.hour, time.minute);
+          var dateTimeFrom = DateTime(dateFrom.year, dateFrom.month,
+              dateFrom.day, time.hour, time.minute);
+          var dateTimeTo = DateTime(
+              dateTo.year, dateTo.month, dateTo.day, time.hour, time.minute);
 
-      while (dateTimeFrom.compareTo(dateTimeTo) <= 0) {
-        irrigarionSchedules.add(dateTimeFrom);
-        dateTimeFrom = dateTimeFrom.add(const Duration(days: 1));
+          while (dateTimeFrom.compareTo(dateTimeTo) <= 0) {
+            irrigarionSchedules.add(dateTimeFrom);
+            dateTimeFrom = dateTimeFrom.add(const Duration(days: 1));
+          }
+        }
       }
 
+      irrigarionSchedules.sort(((a, b) => a.compareTo(b)));
+      if (irrigarionSchedules.isEmpty) {
+        setState(() {
+          _timeString = "";
+        });
+      }
       for (var date in irrigarionSchedules) {
         if ((DateTime.now()).compareTo(date) < 0) {
           var timeDifference = date.difference(DateTime.now());
