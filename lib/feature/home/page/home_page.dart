@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:irrigation/feature/home/widget/drawer_widget.dart';
 import 'package:irrigation/feature/home/widget/map_widget.dart';
 import 'package:irrigation/feature/home/widget/sensor_delete_dialog.dart';
 import 'package:irrigation/feature/home/widget/valve_list_item_widget.dart';
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.add))
         ],
       ),
-      drawer: const Drawer(),
+      drawer: const DrawerWidget(),
       body: RefreshIndicator(
         onRefresh: () =>
             Provider.of<SensorProvider>(context, listen: false).refreshList(),

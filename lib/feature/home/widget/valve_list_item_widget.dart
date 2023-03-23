@@ -5,8 +5,6 @@ import 'package:irrigation/feature/home/widget/tile_info_column_widget.dart';
 import 'package:irrigation/models/response/irregation_schedule_response.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/feature/home/widget/tile_info_row_widget.dart';
-import 'package:irrigation/provider/sensor_provider.dart';
-import 'package:provider/provider.dart';
 
 class ValveListItem extends StatefulWidget {
   const ValveListItem({super.key, required this.sensor});
