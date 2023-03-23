@@ -185,6 +185,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                     ),
                   ),
 
+                  //MAP
                   const SizedBox(
                     height: 20,
                   ),

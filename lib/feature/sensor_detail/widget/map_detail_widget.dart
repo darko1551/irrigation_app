@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:irrigation/constants/map_constants.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
+import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:provider/provider.dart';
@@ -104,14 +106,13 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
               sensorProvided.longitude,
             ),
             zoom: 15,
+            maxZoom: 18.45,
           ),
           children: [
             TileLayer(
-              urlTemplate: MediaQuery.of(context).platformBrightness ==
-                      Brightness.dark
-                  ? 'https://maps.geoapify.com/v1/tile/dark-matter-yellow-roads/{z}/{x}/{y}.png?&apiKey=9b38379eb2b14acbb41d6fe85542788f'
-                  : 'https://maps.geoapify.com/v1/tile/osm-liberty/{z}/{x}/{y}.png?&apiKey=9b38379eb2b14acbb41d6fe85542788f',
-              userAgentPackageName: 'com.example.app',
+              urlTemplate: Provider.of<DarkThemeProvider>(context).darkTheme
+                  ? MapConstants.darkMap
+                  : MapConstants.lightMap,
             ),
             MarkerLayer(
               rotate: true,

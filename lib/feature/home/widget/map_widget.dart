@@ -7,6 +7,7 @@ import 'package:irrigation/constants/map_constants.dart';
 import 'package:irrigation/feature/map/page/map_page.dart';
 import 'package:irrigation/feature/sensor_detail/page/sensor_detail_page.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
+import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -70,14 +71,7 @@ class _MapWidgetState extends State<MapWidget> {
                       ),
                     ),
                   ],
-                )
-
-                /*Icon(
-              Icons.location_pin,
-              color: Theme.of(context).indicatorColor,
-              size: !widget.fullScreen ? 30 : 40,
-            ),*/
-                );
+                ));
           },
         ));
       }
@@ -125,6 +119,7 @@ class _MapWidgetState extends State<MapWidget> {
             FlutterMap(
               mapController: _mapController,
               options: MapOptions(
+                maxZoom: 18.45,
                 onTap: (tapPosition, point) => Get.to(() => const MapPage()),
                 bounds: bounds,
               ),
@@ -134,8 +129,7 @@ class _MapWidgetState extends State<MapWidget> {
                   //https://apidocs.geoapify.com/docs/maps/map-tiles/#about
                   urlTemplate: satelite
                       ? MapConstants.sateliteMap
-                      : MediaQuery.of(context).platformBrightness ==
-                              Brightness.dark
+                      : Provider.of<DarkThemeProvider>(context).darkTheme
                           ? MapConstants.darkMap
                           : MapConstants.lightMap,
 

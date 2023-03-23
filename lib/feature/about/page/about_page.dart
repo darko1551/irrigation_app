@@ -22,7 +22,7 @@ class _AboutPageState extends State<AboutPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("  About apolication"),
+            const Text("  About application"),
             const SizedBox(
               height: 8,
             ),

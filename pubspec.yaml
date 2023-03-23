@@ -50,6 +50,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.4.54
   shared_preferences: ^2.0.20
   package_info_plus: ^3.0.3
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:
