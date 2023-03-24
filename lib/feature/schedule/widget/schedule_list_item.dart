@@ -30,7 +30,7 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
         .singleWhere((element) => element.sensorId == widget.sensor.sensorId)
         .irregationSchedules
         .singleWhere((element) => element.id == widget.schedule.id)
-        .doNotIrregate;
+        .activated;
     return Container(
       padding: const EdgeInsets.all(15),
       width: double.maxFinite,

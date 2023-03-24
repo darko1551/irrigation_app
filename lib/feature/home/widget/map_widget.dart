@@ -104,13 +104,16 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   Widget build(BuildContext context) {
     final sensorProvider = Provider.of<SensorProvider>(context);
+    LatLngBounds? bounds;
 
-    Rect rect = calculateBounds(sensorProvider.getSensors
-        .map((e) => LatLng(e.latitude, e.longitude))
-        .toList());
+    if (sensorProvider.getSensors.isNotEmpty) {
+      Rect rect = calculateBounds(sensorProvider.getSensors
+          .map((e) => LatLng(e.latitude, e.longitude))
+          .toList());
 
-    LatLngBounds bounds = LatLngBounds(LatLng(rect.topLeft.dx, rect.topLeft.dy),
-        LatLng(rect.bottomRight.dx, rect.bottomRight.dy));
+      bounds = LatLngBounds(LatLng(rect.topLeft.dx, rect.topLeft.dy),
+          LatLng(rect.bottomRight.dx, rect.bottomRight.dy));
+    }
 
     return Consumer<SensorProvider>(
       builder: (context, value, child) {

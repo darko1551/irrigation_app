@@ -16,7 +16,7 @@ IrregationScheduleResponse _$IrregationScheduleResponseFromJson(
           const CostumDateTimeConverter().fromJson(json['dateTo'] as String),
       time: const CostumTimeOnlyConverter().fromJson(json['time'] as String),
       duration: (json['duration'] as num).toDouble(),
-      doNotIrregate: json['doNotIrregate'] as bool,
+      activated: json['activated'] as bool,
     );
 
 Map<String, dynamic> _$IrregationScheduleResponseToJson(
@@ -27,5 +27,5 @@ Map<String, dynamic> _$IrregationScheduleResponseToJson(
       'dateTo': const CostumDateTimeConverter().toJson(instance.dateTo),
       'time': const CostumTimeOnlyConverter().toJson(instance.time),
       'duration': instance.duration,
-      'doNotIrregate': instance.doNotIrregate,
+      'activated': instance.activated,
     };

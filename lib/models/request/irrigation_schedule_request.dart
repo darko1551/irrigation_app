@@ -14,14 +14,14 @@ class IrrigationScheduleRequest {
   @CostumTimeOnlyConverter()
   TimeOfDay time;
   double duration;
-  bool doNotIrrigate;
+  bool activated;
 
   IrrigationScheduleRequest(
       {required this.dateFrom,
       required this.dateTo,
       required this.time,
       required this.duration,
-      required this.doNotIrrigate});
+      required this.activated});
 
   factory IrrigationScheduleRequest.fromJson(Map<String, dynamic> json) =>
       _$IrrigationScheduleRequestFromJson(json);

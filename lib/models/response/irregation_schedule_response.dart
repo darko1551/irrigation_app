@@ -15,7 +15,7 @@ class IrregationScheduleResponse {
   @CostumTimeOnlyConverter()
   TimeOfDay time;
   double duration;
-  bool doNotIrregate;
+  bool activated;
 
   IrregationScheduleResponse(
       {required this.id,
@@ -23,7 +23,7 @@ class IrregationScheduleResponse {
       required this.dateTo,
       required this.time,
       required this.duration,
-      required this.doNotIrregate});
+      required this.activated});
 
   factory IrregationScheduleResponse.fromJson(Map<String, dynamic> json) =>
       _$IrregationScheduleResponseFromJson(json);

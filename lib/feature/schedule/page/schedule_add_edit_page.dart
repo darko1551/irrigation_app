@@ -81,7 +81,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
           dateFrom: _dateFrom!,
           dateTo: _dateTo!,
           time: _time!,
-          doNotIrrigate: true,
+          activated: true,
           duration: double.parse(_durationController.text));
       try {
         await Provider.of<SensorProvider>(context, listen: false)
@@ -106,7 +106,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
           dateFrom: _dateFrom!,
           dateTo: _dateTo!,
           time: _time!,
-          doNotIrrigate: true,
+          activated: true,
           duration: double.parse(_durationController.text));
       try {
         await Provider.of<SensorProvider>(context, listen: false)

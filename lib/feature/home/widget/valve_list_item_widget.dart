@@ -153,7 +153,7 @@ class _ValveListItemState extends State<ValveListItem> {
     if (widget.sensor.irregationSchedules.isNotEmpty) {
       for (IrregationScheduleResponse schedule
           in widget.sensor.irregationSchedules) {
-        if (schedule.doNotIrregate) {
+        if (schedule.activated) {
           DateTime dateFrom = schedule.dateFrom;
           TimeOfDay time = schedule.time;
           DateTime dateTo = schedule.dateTo;
