@@ -7,6 +7,7 @@ import 'package:irrigation/models/update/sensor_update.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SensorEditPage extends StatefulWidget {
   const SensorEditPage({super.key, required this.sensor});
@@ -22,6 +23,7 @@ class _SensorEditPageState extends State<SensorEditPage> {
   late TextEditingController _hThresholdController;
   String _latitude = "";
   String _longitude = "";
+  late AppLocalizations localization;
 
   Future<bool> editSensor() async {
     bool success = false;
@@ -32,11 +34,12 @@ class _SensorEditPageState extends State<SensorEditPage> {
         _hTreshold.isEmpty ||
         _latitude.isEmpty ||
         _longitude.isEmpty) {
-      Get.snackbar("Warning", "Not all parameters inserted!",
+      Get.snackbar(localization.warning, localization.notAllParametersInserted,
           backgroundColor: Theme.of(context).cardColor);
     } else if (double.tryParse(_hTreshold) == null &&
         _hThresholdController.text.isNotEmpty) {
-      Get.snackbar("Warning", "Humidity threshold must be a number!",
+      Get.snackbar(
+          localization.warning, localization.humidityThresholdMustbeNumber,
           backgroundColor: Theme.of(context).cardColor);
     } else {
       try {
@@ -48,10 +51,13 @@ class _SensorEditPageState extends State<SensorEditPage> {
                 longitude: double.parse(_longitude),
                 humidityThreshold: double.parse(_hTreshold)));
         success = true;
-        Get.snackbar("Success", "Sensor edited successfully",
-            backgroundColor: Theme.of(context).cardColor);
+        if (mounted) {
+          Get.snackbar(
+              localization.success, localization.sensorEditedSuccessfully,
+              backgroundColor: Theme.of(context).cardColor);
+        }
       } catch (e) {
-        Get.snackbar("Warning", e.toString(),
+        Get.snackbar(localization.warning, e.toString(),
             backgroundColor: Theme.of(context).cardColor);
       }
     }
@@ -77,10 +83,11 @@ class _SensorEditPageState extends State<SensorEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
     bool networkStatus = Provider.of<NetworkProvider>(context).networkStatus;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Editing: ${widget.sensor.name}"),
+        title: Text("${localization.editing}${widget.sensor.name}"),
         actions: [
           IconButton(
             onPressed: networkStatus
@@ -102,7 +109,7 @@ class _SensorEditPageState extends State<SensorEditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //NAME
-                  const Text("Name"),
+                  Text(localization.name),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -114,9 +121,9 @@ class _SensorEditPageState extends State<SensorEditPage> {
                     ),
                     child: TextField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Insert name",
+                        hintText: localization.insertName,
                       ),
                     ),
                   ),
@@ -125,7 +132,7 @@ class _SensorEditPageState extends State<SensorEditPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Humidity threshold"),
+                  Text(localization.humidityThreshold),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -138,9 +145,9 @@ class _SensorEditPageState extends State<SensorEditPage> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       controller: _hThresholdController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Insert humidity threshold value",
+                        hintText: localization.insertHumidityThreshold,
                       ),
                     ),
                   ),
@@ -148,7 +155,7 @@ class _SensorEditPageState extends State<SensorEditPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Location"),
+                  Text(localization.location),
                   const SizedBox(height: 8),
                   SelectLocationMapWidget(
                       latitude: widget.sensor.latitude,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/feature/schedule/page/schedule_list_page.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ActionsWidget extends StatelessWidget {
   const ActionsWidget({super.key, required this.enabled, required this.sensor});
@@ -10,6 +11,7 @@ class ActionsWidget extends StatelessWidget {
   final bool enabled;
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -30,7 +32,7 @@ class ActionsWidget extends StatelessWidget {
                     sensor: sensor,
                   ));
             },
-            child: const Text("Schedules"),
+            child: Text(localization!.schedules),
           ),
         ],
       ),

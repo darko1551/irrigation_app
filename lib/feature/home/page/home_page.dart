@@ -11,6 +11,7 @@ import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,15 +28,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      /* networkStatus =
-          Provider.of<NetworkProvider>(context, listen: false).networkStatus;
-      if (networkStatus) {
-        Provider.of<SensorProvider>(context, listen: false).initializeList();
-      }
-*/
-    });
   }
 
   Future<void> deleteSensorDialog(BuildContext context, SensorResponse sensor) {
@@ -49,6 +41,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
+
     var size = MediaQuery.of(context).size;
     networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
@@ -69,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: AppBar(
-        title: const Text("Irrigation"),
+        title: Text(localization!.appTitle),
         centerTitle: true,
         actions: [
           IconButton(
@@ -90,8 +84,8 @@ class _HomePageState extends State<HomePage> {
             switch (networkStatus) {
               case true:
                 return value.getSensors.isEmpty
-                    ? const Center(
-                        child: Text("No sensors"),
+                    ? Center(
+                        child: Text(localization.noSensors),
                       )
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),

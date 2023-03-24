@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoInternetWidget extends StatelessWidget {
   const NoInternetWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    var localization = AppLocalizations.of(context);
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.wifi_off_sharp,
             size: 60,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
-            "No internet connection!",
-            style: TextStyle(fontSize: 15),
+            localization!.noInternetConnection,
+            style: const TextStyle(fontSize: 15),
           )
         ],
       ),

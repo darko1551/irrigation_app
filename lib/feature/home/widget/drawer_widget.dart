@@ -5,6 +5,9 @@ import 'package:irrigation/feature/home/page/home_page.dart';
 import 'package:irrigation/feature/map/page/map_page.dart';
 import 'package:irrigation/feature/sensor_add/page/sensor_add_page.dart';
 import 'package:irrigation/feature/settings/page/settings_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:irrigation/provider/localization_provider.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -16,6 +19,8 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
+
     return Drawer(
       child: Column(
         children: [
@@ -50,36 +55,38 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => Get.to(() => const MapPage()),
-              child: const DrawerElementWidget(
-                  icon: Icon(Icons.map), text: "Map")),
+              child: DrawerElementWidget(
+                  icon: const Icon(Icons.map), text: localization!.map)),
           GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => Get.to(() => const HomePage()),
-              child: const DrawerElementWidget(
-                  icon: Icon(Icons.sensors), text: "Sensors")),
+              child: DrawerElementWidget(
+                  icon: const Icon(Icons.sensors), text: localization.sensors)),
           GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => Get.to(() => const SensorAddPage()),
-              child: const DrawerElementWidget(
-                  icon: Icon(Icons.add), text: "Add sensor")),
+              child: DrawerElementWidget(
+                  icon: const Icon(Icons.add), text: localization.addSensor)),
           const Divider(),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => Get.to(() => const SettingsPage()),
-            child: const DrawerElementWidget(
-                icon: Icon(Icons.settings), text: "Settings"),
+            child: DrawerElementWidget(
+                icon: const Icon(Icons.settings), text: localization.settings),
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => Get.to(() => const AboutPage()),
-            child: const DrawerElementWidget(
-                icon: Icon(Icons.info_outline), text: "About application"),
+            child: DrawerElementWidget(
+                icon: const Icon(Icons.info_outline),
+                text: localization.aboutApplication),
           ),
           const Divider(
             thickness: 1,
           ),
-          const DrawerElementWidget(
-              icon: Icon(Icons.logout_outlined), text: "Log out"),
+          DrawerElementWidget(
+              icon: const Icon(Icons.logout_outlined),
+              text: localization.logOut),
         ],
       ),
     );

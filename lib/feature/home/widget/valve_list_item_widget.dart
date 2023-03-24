@@ -5,6 +5,7 @@ import 'package:irrigation/feature/home/widget/tile_info_column_widget.dart';
 import 'package:irrigation/models/response/irregation_schedule_response.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/feature/home/widget/tile_info_row_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ValveListItem extends StatefulWidget {
   const ValveListItem({super.key, required this.sensor});
@@ -18,6 +19,7 @@ class ValveListItem extends StatefulWidget {
 class _ValveListItemState extends State<ValveListItem> {
   String _timeString = "";
   Timer? timer;
+  late AppLocalizations localization;
 
   int? getLastActiveDifference() {
     if (widget.sensor.lastActive == null) {
@@ -53,6 +55,7 @@ class _ValveListItemState extends State<ValveListItem> {
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
     var size = MediaQuery.of(context).size;
     bool disabled = checkEnabled() ? false : true;
 
@@ -122,7 +125,7 @@ class _ValveListItemState extends State<ValveListItem> {
             padding: const EdgeInsets.only(top: 15),
             width: size.width * 0.33,
             child: TileInfoColumnWidget(
-              text: _timeString == "" ? "No schedule" : _timeString,
+              text: _timeString == "" ? localization.noSchedule : _timeString,
               icon: Icons.date_range_outlined,
               color: disabled ? Theme.of(context).disabledColor : null,
               size: 30,
@@ -132,7 +135,9 @@ class _ValveListItemState extends State<ValveListItem> {
             padding: const EdgeInsets.only(top: 15),
             width: size.width * 0.33,
             child: TileInfoColumnWidget(
-              text: "${widget.sensor.waterUsageLast ?? "N/A"} liters",
+              text: widget.sensor.waterUsageLast != null
+                  ? localization.liters(widget.sensor.waterUsageLast!)
+                  : "N/A",
               icon: Icons.water,
               color: disabled ? Theme.of(context).disabledColor : null,
               size: 30,
@@ -177,13 +182,13 @@ class _ValveListItemState extends State<ValveListItem> {
           setState(
             () {
               if (timeDifference.inMinutes <= 1) {
-                _timeString = "${timeDifference.inSeconds.toString()} seconds";
+                _timeString = localization.seconds(timeDifference.inSeconds);
               } else if (timeDifference.inHours <= 1) {
-                _timeString = "${timeDifference.inMinutes.toString()} minutes";
+                _timeString = localization.minutes(timeDifference.inMinutes);
               } else if (timeDifference.inDays <= 1) {
-                _timeString = "${timeDifference.inHours.toString()} hours";
+                _timeString = localization.hours(timeDifference.inHours);
               } else {
-                _timeString = "${timeDifference.inDays.toString()} days";
+                _timeString = localization.days(timeDifference.inDays);
               }
             },
           );

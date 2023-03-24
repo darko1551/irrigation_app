@@ -6,6 +6,7 @@ import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectLocationMapWidget extends StatefulWidget {
   const SelectLocationMapWidget(
@@ -25,12 +26,12 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
   late Future<Position?> currentPosition;
   bool satelite = false;
   late MapController _mapController;
+  late AppLocalizations localization;
 
   @override
   void initState() {
     _mapController = MapController();
     currentPosition = _getCurrentPosition();
-
     if (widget.latitude != null && widget.longitude != null) {
       marker = Marker(
           point: lat_lng.LatLng(widget.latitude!, widget.longitude!),
@@ -57,20 +58,21 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Get.snackbar(
-          "Warning", "Turn on location services for better experience");
+          localization.warning, localization.turnOnLocationForBetterExperience);
       return null;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        Get.snackbar("Warning", 'Location permissions are denied');
+        Get.snackbar(
+            localization.warning, localization.locationPermissionDenied);
         return null;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      Get.snackbar("Warning",
-          'Location permissions are permanently denied, we cannot request permissions.');
+      Get.snackbar(localization.warning,
+          localization.locationPermissionPermanentlyDenied);
       return null;
     }
     Position position = await Geolocator.getCurrentPosition();
@@ -79,6 +81,8 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(1),
@@ -145,11 +149,7 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
                                     : [currentLocationMarker!]
                                 : currentLocationMarker == null
                                     ? [marker!]
-                                    : [marker!, currentLocationMarker!]
-
-                            //? [currentLocationMarker!]
-                            //: [currentLocationMarker!, marker!],
-                            )
+                                    : [marker!, currentLocationMarker!])
                       ],
                     ),
                     Positioned(

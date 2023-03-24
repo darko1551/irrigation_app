@@ -8,6 +8,7 @@ import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScheduleListPage extends StatefulWidget {
   const ScheduleListPage({super.key, required this.sensor});
@@ -21,6 +22,7 @@ class _ScheduleListPageState extends State<ScheduleListPage> {
   bool state = true;
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     bool networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
 
@@ -31,7 +33,7 @@ class _ScheduleListPageState extends State<ScheduleListPage> {
         .irregationSchedules;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Schedules for: ${widget.sensor.name}"),
+        title: Text("${localization!.schedulesFor} ${widget.sensor.name}"),
         actions: [
           IconButton(
               onPressed: networkStatus

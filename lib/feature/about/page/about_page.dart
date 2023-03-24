@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irrigation/feature/home/widget/drawer_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -12,19 +13,20 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
-        title: const Text("About application"),
+        title: Text(localization!.aboutApplication),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("  About application"),
-            const SizedBox(
-              height: 8,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(localization.aboutApplication),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -39,9 +41,10 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(
                     width: 10,
                   ),
-                  const Text(
-                    "Application version",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  Text(
+                    localization.applicationVersion,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 17),
                   ),
                   Expanded(child: Container()),
                   FutureBuilder(

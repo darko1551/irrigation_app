@@ -132,8 +132,6 @@ class _MapWidgetState extends State<MapWidget> {
                       : Provider.of<DarkThemeProvider>(context).darkTheme
                           ? MapConstants.darkMap
                           : MapConstants.lightMap,
-
-                  userAgentPackageName: 'com.example.app',
                 ),
                 MarkerLayer(
                   rotate: true,

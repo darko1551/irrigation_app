@@ -10,6 +10,7 @@ import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SensorDetailPage extends StatefulWidget {
   const SensorDetailPage({super.key, required this.sensor});
@@ -33,6 +34,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     SensorResponse? sensorProvided;
     bool networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
@@ -49,7 +51,8 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                       Provider.of<SensorProvider>(context, listen: false)
                           .removeSensor(widget.sensor.sensorId);
                       Get.back();
-                      Get.snackbar("Success", "Sensor removed!",
+                      Get.snackbar(localization!.success,
+                          localization.sensorRemovedSuccessfully,
                           backgroundColor: Theme.of(context).cardColor);
                     }
                   : null,
@@ -81,7 +84,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                         enabled: checkEnabled(sensorProvided),
                         sensor: sensorProvided),
                     //ACTIONS
-                    const Text("Device actions"),
+                    Text(localization!.deviceActions),
                     const SizedBox(height: 8),
                     ActionsWidget(
                         enabled: checkEnabled(sensorProvided),
@@ -90,7 +93,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                       height: 20,
                     ),
                     //MAP
-                    const Text("Device location"),
+                    Text(localization.deviceLocation),
                     const SizedBox(height: 8),
                     MapDetailWidget(sensor: widget.sensor),
                     const SizedBox(height: 8),
@@ -98,7 +101,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                       height: 20,
                     ),
                     //DEVICE INFO
-                    const Text("Device info"),
+                    Text(localization.deviceInfo),
                     const SizedBox(height: 8),
                     DeviceInfoWidget(sensor: widget.sensor),
                     const SizedBox(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SensorDeleteDialog extends StatelessWidget {
   const SensorDeleteDialog({super.key, required this.sensor});
@@ -10,15 +11,16 @@ class SensorDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text("Delete sensor"),
-      content: Text("Are you sure you want to delete sensor: ${sensor.name}?"),
+      title: Text(localization!.deleteSensor),
+      content: Text("${localization.deleteSensorConfirmation} ${sensor.name}?"),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("No"),
+          child: Text(localization.no),
         ),
         TextButton(
           onPressed: () {
@@ -26,7 +28,7 @@ class SensorDeleteDialog extends StatelessWidget {
                 .removeSensor(sensor.sensorId);
             Navigator.of(context).pop();
           },
-          child: const Text("Yes"),
+          child: Text(localization.yes),
         ),
       ],
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'device_info_element_widget.dart';
 
 class DeviceInfoWidget extends StatelessWidget {
@@ -12,6 +12,7 @@ class DeviceInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     SensorResponse? sensorProvided =
         Provider.of<SensorProvider>(context).getSensor(sensor.mac);
     return Container(
@@ -26,7 +27,7 @@ class DeviceInfoWidget extends StatelessWidget {
           DeviceInfoElementWidget(
             icon: Icons.label,
             text: sensor.mac,
-            title: "Mac",
+            title: localization!.mac,
           ),
           const SizedBox(
             height: 8,
@@ -34,7 +35,7 @@ class DeviceInfoWidget extends StatelessWidget {
           DeviceInfoElementWidget(
             icon: Icons.thermostat,
             text: "${sensor.sensorData.temperature ?? "N/A"} °C",
-            title: "Temperature",
+            title: localization.temperature,
           ),
           const SizedBox(
             height: 8,
@@ -42,35 +43,35 @@ class DeviceInfoWidget extends StatelessWidget {
           DeviceInfoElementWidget(
               icon: Icons.water_drop,
               text: "${sensor.sensorData.humidity ?? "N/A"} %",
-              title: "Humidity"),
+              title: localization.humidity),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.waterfall_chart_rounded,
               text: "${sensorProvided!.humidityThreshold} %",
-              title: "Humidity threshuld"),
+              title: localization.humidityThreshold),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.data_usage,
               text: "${sensor.waterUsageLast ?? "N/A"} l",
-              title: "Water usage - last"),
+              title: localization.waterUsageLast),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.circle_outlined,
               text: "${sensor.waterUsageAllTime ?? "N/A"} l",
-              title: "Water usage - All time"),
+              title: localization.waterUsageAll),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.location_on_outlined,
               text: "${sensorProvided.latitude}  ${sensorProvided.longitude}",
-              title: "Location"),
+              title: localization.location),
         ],
       ),
     );

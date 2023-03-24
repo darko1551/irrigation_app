@@ -7,6 +7,7 @@ import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SensorAddPage extends StatefulWidget {
   const SensorAddPage({super.key});
@@ -21,6 +22,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
   late TextEditingController _hThresholdController;
   String _latitude = "";
   String _longitude = "";
+  late AppLocalizations localization;
 
   @override
   void initState() {
@@ -40,7 +42,6 @@ class _SensorAddPageState extends State<SensorAddPage> {
 
   Future<bool> addSensor() async {
     bool success = false;
-    int? newId;
     String _name = _nameController.text;
     String _mac = _macController.text;
     String _hTreshold = _hThresholdController.text;
@@ -50,16 +51,17 @@ class _SensorAddPageState extends State<SensorAddPage> {
         _hTreshold.isEmpty ||
         _latitude.isEmpty ||
         _longitude.isEmpty) {
-      Get.snackbar("Warning", "Not all parameters inserted!",
+      Get.snackbar(localization.warning, localization.notAllParametersInserted,
           backgroundColor: Theme.of(context).cardColor);
     } else if (double.tryParse(_hTreshold) == null &&
         _hThresholdController.text.isNotEmpty) {
-      Get.snackbar("Warning", "Humidity threshold must be a number!",
+      Get.snackbar(
+          localization.warning, localization.humidityThresholdMustbeNumber,
           backgroundColor: Theme.of(context).cardColor);
     } else {
       try {
-        newId = await Provider.of<SensorProvider>(context, listen: false)
-            .addSensor(SensorRequest(
+        await Provider.of<SensorProvider>(context, listen: false).addSensor(
+            SensorRequest(
                 name: _name,
                 latitude: double.parse(_latitude),
                 longitude: double.parse(_longitude),
@@ -67,10 +69,10 @@ class _SensorAddPageState extends State<SensorAddPage> {
                 humidityThreshold: double.parse(_hTreshold)));
         success = true;
 
-        Get.snackbar("Success", "Sensor added successfully",
+        Get.snackbar(localization.success, localization.sensorAddedSuccessfully,
             backgroundColor: Theme.of(context).cardColor);
       } catch (e) {
-        Get.snackbar("Warning", e.toString());
+        Get.snackbar(localization.warning, e.toString());
       }
     }
     return success;
@@ -78,12 +80,13 @@ class _SensorAddPageState extends State<SensorAddPage> {
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
     bool networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New Sensor"),
+        title: Text(localization.newSensor),
         actions: [
           IconButton(
             onPressed: networkStatus
@@ -105,7 +108,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //NAME
-                  const Text("Name"),
+                  Text(localization.name),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -117,9 +120,9 @@ class _SensorAddPageState extends State<SensorAddPage> {
                     ),
                     child: TextField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Insert name",
+                        hintText: localization.insertName,
                       ),
                     ),
                   ),
@@ -128,7 +131,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Mac"),
+                  Text(localization.mac),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -143,9 +146,9 @@ class _SensorAddPageState extends State<SensorAddPage> {
                         Expanded(
                           child: TextField(
                             controller: _macController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "Insert device MAC",
+                              hintText: localization.insertDeviceMac,
                             ),
                           ),
                         ),
@@ -165,7 +168,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Humidity threshold"),
+                  Text(localization.humidityThreshold),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -178,9 +181,9 @@ class _SensorAddPageState extends State<SensorAddPage> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       controller: _hThresholdController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Insert humidity threshold value",
+                        hintText: localization.insertHumidityThreshold,
                       ),
                     ),
                   ),
@@ -189,7 +192,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Location"),
+                  Text(localization.location),
                   const SizedBox(height: 8),
                   SelectLocationMapWidget(onChanged: (retrievedCoordinates) {
                     _latitude = retrievedCoordinates.latitude.toString();

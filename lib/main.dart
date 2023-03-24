@@ -1,9 +1,11 @@
 import 'dart:io';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/feature/home/page/home_page.dart';
 import 'package:irrigation/provider/dark_theme_provider.dart';
+import 'package:irrigation/provider/localization_provider.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:irrigation/theme/styles.dart';
@@ -21,6 +23,9 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+  LocalizationProvider pro = LocalizationProvider();
+  await pro.initLocale();
+
   runApp(
     MultiProvider(
       providers: [
@@ -32,6 +37,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => DarkThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => pro,
         ),
       ],
       child: const MyApp(),
@@ -63,10 +71,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
-      title: 'Irregation',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('hr', ''),
+      ],
       theme: Styles.themeData(
           Provider.of<DarkThemeProvider>(context).darkTheme, context),
+      locale: Provider.of<LocalizationProvider>(context).locale,
       home: const HomePage(),
     );
   }

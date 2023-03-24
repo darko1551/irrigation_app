@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectionInfoWidget extends StatelessWidget {
   const ConnectionInfoWidget(
@@ -10,6 +11,7 @@ class ConnectionInfoWidget extends StatelessWidget {
   final bool enabled;
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -25,7 +27,9 @@ class ConnectionInfoWidget extends StatelessWidget {
                   size: 15,
                 ),
                 Text(
-                  enabled ? " Online" : " Offline",
+                  enabled
+                      ? " ${localization!.online}"
+                      : " ${localization!.offline}",
                   style: const TextStyle(fontSize: 20),
                 ),
               ],
@@ -48,7 +52,7 @@ class ConnectionInfoWidget extends StatelessWidget {
               ],
             ),
             Text(
-              sensor.state ? " Open" : " Closed",
+              sensor.state ? " ${localization.open}" : " ${localization.close}",
               style: const TextStyle(fontSize: 20),
             ),
           ],
@@ -58,7 +62,7 @@ class ConnectionInfoWidget extends StatelessWidget {
         ),
         Text(
           sensor.lastActive == null
-              ? "Unknown"
+              ? localization.unknown
               : DateFormat('dd.MM.yyyy hh:mm').format(sensor.lastActive!),
           style: const TextStyle(fontSize: 13),
         ),

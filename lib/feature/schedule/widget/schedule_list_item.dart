@@ -4,6 +4,7 @@ import 'package:irrigation/models/response/irregation_schedule_response.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScheduleListitem extends StatefulWidget {
   const ScheduleListitem(
@@ -23,6 +24,7 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
     bool state = Provider.of<SensorProvider>(context, listen: true)
         .getSensors
         .singleWhere((element) => element.sensorId == widget.sensor.sensorId)
@@ -41,14 +43,14 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Date from"),
+              Text(localization!.dateFrom),
               Text(
                 "${widget.schedule.dateFrom.day}.${widget.schedule.dateFrom.month}.${widget.schedule.dateFrom.year}.",
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Expanded(child: Container()),
-              const Text("Date to"),
+              Text(localization.dateTo),
               Text(
                 "${widget.schedule.dateTo.day}.${widget.schedule.dateTo.month}.${widget.schedule.dateTo.year}.",
                 style:
@@ -62,7 +64,7 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Time"),
+              Text(localization.time),
               Text(
                 '${widget.schedule.time.hour.toString().padLeft(2, '0')}:${widget.schedule.time.minute.toString().padLeft(2, '0')}',
                 style:
@@ -71,7 +73,7 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
               Expanded(
                 child: Container(),
               ),
-              const Text("Duration"),
+              Text(localization.duration),
               Text(
                 '${widget.schedule.duration} min',
                 style:
@@ -87,7 +89,7 @@ class _ScheduleListitemState extends State<ScheduleListitem> {
                 await Provider.of<SensorProvider>(context, listen: false)
                     .scheduleActivation(widget.schedule.id, value);
               } catch (e) {
-                Get.snackbar("Warning", e.toString(),
+                Get.snackbar(localization.warning, e.toString(),
                     backgroundColor: Theme.of(context).cardColor);
               }
             },

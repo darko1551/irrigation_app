@@ -7,6 +7,7 @@ import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScheduleAddEditPage extends StatefulWidget {
   const ScheduleAddEditPage({super.key, this.schedule, this.sensor});
@@ -22,6 +23,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
   DateTime? _dateFrom;
   DateTime? _dateTo;
   TimeOfDay? _time;
+  late AppLocalizations localization;
 
   @override
   void initState() {
@@ -47,14 +49,15 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
         _time == null ||
         _durationController.text.isEmpty) {
       if (displayMessages) {
-        Get.snackbar("Warning", "Not all parameters inserted!",
+        Get.snackbar(
+            localization.warning, localization.notAllParametersInserted,
             backgroundColor: Theme.of(context).cardColor);
       }
       return false;
     }
     if (_dateFrom!.compareTo(_dateTo!) > 0) {
       if (displayMessages) {
-        Get.snackbar("Warning", "Date to is before Date from!",
+        Get.snackbar(localization.warning, localization.dateToBeforeDateFrom,
             backgroundColor: Theme.of(context).cardColor);
       }
       return false;
@@ -62,7 +65,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
 
     if (double.tryParse(_durationController.text) == null) {
       if (displayMessages) {
-        Get.snackbar("Warning", "Duration must be integer!",
+        Get.snackbar(localization.warning, localization.durationMustBeNumber,
             backgroundColor: Theme.of(context).cardColor);
       }
       return false;
@@ -84,10 +87,11 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
         await Provider.of<SensorProvider>(context, listen: false)
             .addSchedule(widget.sensor!.sensorId, scheduleRequest);
         success = true;
-        Get.snackbar("Success", "Schedule added successfully",
+        Get.snackbar(
+            localization.success, localization.scheduleAddedSuccessfully,
             backgroundColor: Theme.of(context).cardColor);
       } catch (e) {
-        Get.snackbar("Warning", e.toString(),
+        Get.snackbar(localization.warning, e.toString(),
             backgroundColor: Theme.of(context).cardColor);
       }
     }
@@ -108,10 +112,11 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
         await Provider.of<SensorProvider>(context, listen: false)
             .editSchedule(widget.schedule!.id, scheduleRequest);
         success = true;
-        Get.snackbar("Success", "Schedule edited successfully",
+        Get.snackbar(
+            localization.success, localization.scheduleEditedSuccessfully,
             backgroundColor: Theme.of(context).cardColor);
       } catch (e) {
-        Get.snackbar("Warning", e.toString(),
+        Get.snackbar(localization.warning, e.toString(),
             backgroundColor: Theme.of(context).cardColor);
       }
     }
@@ -124,20 +129,25 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
       await Provider.of<SensorProvider>(context, listen: false)
           .removeSchedule(widget.schedule!.id);
       success = true;
-      Get.snackbar("Success", "Schedule removed successfully");
+      Get.snackbar(
+          localization.success, localization.scheduleRemovedSuccessfully);
     } catch (e) {
-      Get.snackbar("Warning", e.toString());
+      Get.snackbar(localization.warning, e.toString());
     }
     return success;
   }
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
+
     bool networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.schedule == null ? "Add schedule" : "Edit schedule"),
+        title: Text(widget.schedule == null
+            ? localization.addSchedule
+            : localization.editSchedule),
         actions: [
           widget.schedule != null
               ? IconButton(
@@ -153,7 +163,6 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
           IconButton(
               onPressed: networkStatus
                   ? () async {
-                      //widget.schedule != null ? addSchedule():;
                       bool success;
                       if (widget.schedule != null) {
                         success = await editSchedule();
@@ -178,7 +187,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                 children: [
                   //DATE FROM
 
-                  const Text("Date from"),
+                  Text(localization.dateFrom),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -191,7 +200,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                       children: [
                         Text(
                           _dateFrom == null
-                              ? "Insert date"
+                              ? localization.insertDate
                               : "${_dateFrom!.day}.${_dateFrom!.month}.${_dateFrom!.year}.",
                           style: TextStyle(
                               fontSize: 18,
@@ -216,7 +225,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
 
                   //DATE TO
                   const SizedBox(height: 20),
-                  const Text("Date to"),
+                  Text(localization.dateTo),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -229,7 +238,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                       children: [
                         Text(
                           _dateTo == null
-                              ? "Insert date"
+                              ? localization.insertDate
                               : "${_dateTo!.day}.${_dateTo!.month}.${_dateTo!.year}.",
                           style: TextStyle(
                               fontSize: 18,
@@ -254,7 +263,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
 
                   //START TIME
                   const SizedBox(height: 20),
-                  const Text("Time"),
+                  Text(localization.time),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -267,7 +276,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                       children: [
                         Text(
                           _time == null
-                              ? "Insert time"
+                              ? localization.insertTime
                               : '${_time!.hour.toString().padLeft(2, '0')}:${_time!.minute.toString().padLeft(2, '0')}',
                           style: TextStyle(
                               fontSize: 18,
@@ -290,7 +299,7 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
 
                   //DURATION
                   const SizedBox(height: 20),
-                  const Text("Duration (min)"),
+                  Text(localization.duration),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -303,8 +312,8 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                       style: const TextStyle(fontSize: 18),
                       keyboardType: TextInputType.number,
                       controller: _durationController,
-                      decoration: const InputDecoration(
-                          hintText: "Insert duration",
+                      decoration: InputDecoration(
+                          hintText: localization.insertDuration,
                           border: InputBorder.none),
                     ),
                   ),
