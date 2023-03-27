@@ -4,6 +4,7 @@ import 'package:irrigation/models/request/irrigation_schedule_request.dart';
 import 'package:irrigation/models/request/sensor_request.dart';
 import 'package:irrigation/models/response/irregation_schedule_response.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
+import 'package:irrigation/models/response/user_response.dart';
 import 'package:irrigation/models/update/sensor_update.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -14,32 +15,38 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
-  @GET(Apis.sensors)
-  Future<List<SensorResponse>> getSensors();
+  @GET(Apis.getSensors)
+  Future<List<SensorResponse>> getSensors(@Path() int userId);
 
-  @DELETE(Apis.sensorsDelete)
-  Future<void> deleteSensor(@Path() int id);
+  @DELETE(Apis.deleteSensor)
+  Future<void> deleteSensor(@Path() int userId, int sensorId);
 
-  @POST(Apis.sensors)
+  @POST(Apis.addSensor)
   Future<int> addSensor(@Body() SensorRequest sensor);
 
-  @PUT(Apis.sensorsEdit)
-  Future<int> editSensor(@Path() int id, @Body() SensorUpdate sensor);
+  @PUT(Apis.updateSensor)
+  Future<int> updateSensor(
+      @Path() int userId, int sensorId, @Body() SensorUpdate sensor);
 
-  @GET(Apis.schedules)
-  Future<List<IrregationScheduleResponse>> getSchedules(@Path() int id);
+  @GET(Apis.getSchedules)
+  Future<List<IrregationScheduleResponse>> getSchedules(
+      @Path() int userId, int sensorId);
 
-  @PUT(Apis.schedulesActivation)
-  Future<int> scheduleActivation(@Path() int id, @Body() bool status);
+  @PUT(Apis.activationActivationUpdate)
+  Future<int> activationActivationUpdate(
+      @Path() int userId, int scheduleId, @Body() bool status);
 
-  @POST(Apis.schedulesAdd)
-  Future<int> addSchedule(
-      @Path() int sensorId, @Body() IrrigationScheduleRequest scheduleRequest);
+  @POST(Apis.addSchedule)
+  Future<int> addSchedule(@Path() int userId, int sensorId,
+      @Body() IrrigationScheduleRequest scheduleRequest);
 
-  @DELETE(Apis.schedules)
-  Future<void> deleteSchedule(@Path() int id);
+  @DELETE(Apis.deleteSchedule)
+  Future<void> deleteSchedule(@Path() int userId, int scheduleId);
 
-  @PUT(Apis.schedules)
-  Future<int> editSchedule(
-      @Path() int id, @Body() IrrigationScheduleRequest scheduleRequest);
+  @PUT(Apis.updateSchedule)
+  Future<int> updateSchedule(@Path() int userId, int scheduleid,
+      @Body() IrrigationScheduleRequest scheduleRequest);
+
+  @GET(Apis.getUsers)
+  Future<List<UserResponse>> getUsers();
 }

@@ -13,7 +13,7 @@ SensorRequest _$SensorRequestFromJson(Map<String, dynamic> json) =>
       longitude: (json['longitude'] as num).toDouble(),
       mac: json['mac'] as String,
       humidityThreshold: (json['humidityThreshold'] as num).toDouble(),
-      groupId: json['groupId'] as int?,
+      userId: json['userId'] as int,
     );
 
 Map<String, dynamic> _$SensorRequestToJson(SensorRequest instance) =>
@@ -23,5 +23,5 @@ Map<String, dynamic> _$SensorRequestToJson(SensorRequest instance) =>
       'longitude': instance.longitude,
       'mac': instance.mac,
       'humidityThreshold': instance.humidityThreshold,
-      'groupId': instance.groupId,
+      'userId': instance.userId,
     };

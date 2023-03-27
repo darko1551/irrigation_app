@@ -6,7 +6,7 @@ import 'package:irrigation/feature/map/page/map_page.dart';
 import 'package:irrigation/feature/sensor_add/page/sensor_add_page.dart';
 import 'package:irrigation/feature/settings/page/settings_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:irrigation/provider/localization_provider.dart';
+import 'package:irrigation/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -41,12 +41,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   const SizedBox(
                     width: 20,
                   ),
-                  Text(
-                    "Darko Debeljak",
-                    style: TextStyle(
-                        color: Theme.of(context).cardColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${Provider.of<UserProvider>(context).user.name} ${Provider.of<UserProvider>(context).user.surname}",
+                        style: TextStyle(
+                            color: Theme.of(context).cardColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      Text(
+                        Provider.of<UserProvider>(context).user.email,
+                        style: TextStyle(
+                            color: Theme.of(context).cardColor, fontSize: 13),
+                      ),
+                    ],
                   ),
                 ],
               ),

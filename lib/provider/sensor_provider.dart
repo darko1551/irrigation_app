@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,11 +7,15 @@ import 'package:irrigation/api/api_client.dart';
 import 'package:irrigation/models/request/irrigation_schedule_request.dart';
 import 'package:irrigation/models/request/sensor_request.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
+import 'package:irrigation/models/response/user_response.dart';
 import 'package:irrigation/models/update/sensor_update.dart';
 import 'package:collection/collection.dart';
+import 'package:irrigation/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SensorProvider extends ChangeNotifier {
   final dio = Dio();
+  late UserProvider userProvider;
 
   List<SensorResponse> _sensorList = [];
   bool isLoading = false;
@@ -20,9 +26,8 @@ class SensorProvider extends ChangeNotifier {
 
   Future<void> initializeList() async {
     isLoading = true;
-
     final apiClient = ApiClient(dio);
-    _sensorList = await apiClient.getSensors();
+    _sensorList = await apiClient.getSensors(userProvider.user.userId);
     isLoading = false;
     notifyListeners();
   }
@@ -32,7 +37,7 @@ class SensorProvider extends ChangeNotifier {
     notifyListeners();
     final dio = Dio();
     final apiClient = ApiClient(dio);
-    _sensorList = await apiClient.getSensors();
+    _sensorList = await apiClient.getSensors(userProvider.user.userId);
     isLoading = false;
     notifyListeners();
   }
@@ -41,12 +46,12 @@ class SensorProvider extends ChangeNotifier {
     return _sensorList.singleWhereOrNull((element) => element.mac == mac);
   }
 
-  Future<void> removeSensor(int id) async {
+  Future<void> removeSensor(int sensorId) async {
     isLoading = true;
     notifyListeners();
     final dio = Dio();
     final apiClient = ApiClient(dio);
-    await apiClient.deleteSensor(id);
+    await apiClient.deleteSensor(userProvider.user.userId, sensorId);
     refreshList();
     isLoading = false;
     notifyListeners();
@@ -71,14 +76,15 @@ class SensorProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<int?> editSensor(int id, SensorUpdate sensor) async {
+  Future<int?> editSensor(int sensorId, SensorUpdate sensor) async {
     int? res;
     isLoading = true;
     notifyListeners();
     try {
       final dio = Dio();
       final apiClient = ApiClient(dio);
-      res = await apiClient.editSensor(id, sensor);
+      res = await apiClient.updateSensor(
+          userProvider.user.userId, sensorId, sensor);
     } on DioError catch (e) {
       if (e.error.toString().contains("name already exists")) {
         throw "Sensor with specified name already exists";
@@ -90,14 +96,15 @@ class SensorProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<int?> scheduleActivation(int id, bool status) async {
+  Future<int?> scheduleActivation(int scheduleId, bool status) async {
     int? res;
     isLoading = true;
     notifyListeners();
     try {
       dio.options.contentType = Headers.jsonContentType;
       final apiClient = ApiClient(dio);
-      res = await apiClient.scheduleActivation(id, status);
+      res = await apiClient.activationActivationUpdate(
+          userProvider.user.userId, scheduleId, status);
     } on DioError catch (e) {
       if (e.error.toString().contains("Schedule does not exist")) {
         throw "Schedule does not exist";
@@ -112,14 +119,15 @@ class SensorProvider extends ChangeNotifier {
   }
 
   Future<int?> addSchedule(
-      int id, IrrigationScheduleRequest scheduleRequest) async {
+      int sensorId, IrrigationScheduleRequest scheduleRequest) async {
     int? res;
     isLoading = true;
     notifyListeners();
     try {
       //dio.options.contentType = Headers.jsonContentType;
       final apiClient = ApiClient(dio);
-      res = await apiClient.addSchedule(id, scheduleRequest);
+      res = await apiClient.addSchedule(
+          userProvider.user.userId, sensorId, scheduleRequest);
     } on DioError catch (e) {
       if (e.error.toString().contains("Specified sensor does not exist")) {
         throw "Specified sensor does not exist";
@@ -138,14 +146,15 @@ class SensorProvider extends ChangeNotifier {
   }
 
   Future<int?> editSchedule(
-      int id, IrrigationScheduleRequest scheduleRequest) async {
+      int scheduleId, IrrigationScheduleRequest scheduleRequest) async {
     int? res;
     isLoading = true;
     notifyListeners();
     try {
       //dio.options.contentType = Headers.jsonContentType;
       final apiClient = ApiClient(dio);
-      res = await apiClient.editSchedule(id, scheduleRequest);
+      res = await apiClient.updateSchedule(
+          userProvider.user.userId, scheduleId, scheduleRequest);
     } on DioError catch (e) {
       if (e.error.toString().contains("Schedule does not exist")) {
         throw "Schedule does not exist";
@@ -159,12 +168,12 @@ class SensorProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<void> removeSchedule(int id) async {
+  Future<void> removeSchedule(int scheduleId) async {
     isLoading = true;
     notifyListeners();
     final dio = Dio();
     final apiClient = ApiClient(dio);
-    await apiClient.deleteSchedule(id);
+    await apiClient.deleteSchedule(userProvider.user.userId, scheduleId);
     refreshList();
     isLoading = false;
     notifyListeners();

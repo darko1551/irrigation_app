@@ -3,10 +3,10 @@ import 'package:irrigation/models/sensor_data.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'sensor_no_group_response.g.dart';
+part 'sensor_no_user_response.g.dart';
 
 @JsonSerializable()
-class SensorNoGroupResponse {
+class SensorNoUserResponse {
   int sensorId;
   String name;
   double latitude;
@@ -14,14 +14,14 @@ class SensorNoGroupResponse {
   String mac;
   SensorData sensorData;
   double humidityThreshold;
-  DateTime lastActive;
-  double waterUsageLast;
-  double waterUsageAllTime;
+  DateTime? lastActive;
+  double? waterUsageLast;
+  double? waterUsageAllTime;
   List<IrregationScheduleResponse> irregationSchedules;
-  int? groupId;
+  int userId;
   bool state;
 
-  SensorNoGroupResponse(
+  SensorNoUserResponse(
       {required this.sensorId,
       required this.name,
       required this.latitude,
@@ -33,10 +33,10 @@ class SensorNoGroupResponse {
       required this.waterUsageLast,
       required this.waterUsageAllTime,
       required this.irregationSchedules,
-      this.groupId,
+      required this.userId,
       required this.state});
 
-  factory SensorNoGroupResponse.fromJson(Map<String, dynamic> json) =>
-      _$SensorNoGroupResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$SensorNoGroupResponseToJson(this);
+  factory SensorNoUserResponse.fromJson(Map<String, dynamic> json) =>
+      _$SensorNoUserResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$SensorNoUserResponseToJson(this);
 }

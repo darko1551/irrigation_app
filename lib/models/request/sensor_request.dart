@@ -9,7 +9,7 @@ class SensorRequest {
   double longitude;
   String mac;
   double humidityThreshold;
-  int? groupId;
+  int userId;
 
   SensorRequest(
       {required this.name,
@@ -17,7 +17,7 @@ class SensorRequest {
       required this.longitude,
       required this.mac,
       required this.humidityThreshold,
-      this.groupId});
+      required this.userId});
 
   factory SensorRequest.fromJson(Map<String, dynamic> json) =>
       _$SensorRequestFromJson(json);

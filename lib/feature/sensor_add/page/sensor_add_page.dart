@@ -5,6 +5,7 @@ import 'package:irrigation/feature/widget/no_internet_widget.dart';
 import 'package:irrigation/models/request/sensor_request.dart';
 import 'package:irrigation/provider/network_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
+import 'package:irrigation/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,6 +63,9 @@ class _SensorAddPageState extends State<SensorAddPage> {
       try {
         await Provider.of<SensorProvider>(context, listen: false).addSensor(
             SensorRequest(
+                userId: Provider.of<UserProvider>(context, listen: false)
+                    .user
+                    .userId,
                 name: _name,
                 latitude: double.parse(_latitude),
                 longitude: double.parse(_longitude),

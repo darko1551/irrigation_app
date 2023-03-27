@@ -21,7 +21,7 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<List<SensorResponse>> getSensors() async {
+  Future<List<SensorResponse>> getSensors(userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -34,7 +34,7 @@ class _ApiClient implements ApiClient {
     )
             .compose(
               _dio.options,
-              '/sensors',
+              '/sensors/${userId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -46,7 +46,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> deleteSensor(id) async {
+  Future<void> deleteSensor(
+    userId,
+    sensorId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -58,7 +61,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/sensors/${id}',
+          '/sensors/${userId}/{sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -89,8 +92,9 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<int> editSensor(
-    id,
+  Future<int> updateSensor(
+    userId,
+    sensorId,
     sensor,
   ) async {
     const _extra = <String, dynamic>{};
@@ -105,7 +109,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/sensors/${id}',
+          '/sensors/${userId}/{sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -115,7 +119,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<List<IrregationScheduleResponse>> getSchedules(id) async {
+  Future<List<IrregationScheduleResponse>> getSchedules(
+    userId,
+    sensorId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -128,7 +135,7 @@ class _ApiClient implements ApiClient {
     )
             .compose(
               _dio.options,
-              '/schedules/${id}',
+              '/schedules/${userId}/{sensorId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -141,8 +148,9 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<int> scheduleActivation(
-    id,
+  Future<int> activationActivationUpdate(
+    userId,
+    scheduleId,
     status,
   ) async {
     const _extra = <String, dynamic>{};
@@ -156,7 +164,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/activation/${id}',
+          '/schedules/activation/${userId}/{scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -167,6 +175,7 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<int> addSchedule(
+    userId,
     sensorId,
     scheduleRequest,
   ) async {
@@ -182,7 +191,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${sensorId}',
+          '/schedules/${userId}/{sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -192,7 +201,10 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> deleteSchedule(id) async {
+  Future<void> deleteSchedule(
+    userId,
+    scheduleId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -204,7 +216,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${id}',
+          '/schedules/${userId}/{scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -212,8 +224,9 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<int> editSchedule(
-    id,
+  Future<int> updateSchedule(
+    userId,
+    scheduleid,
     scheduleRequest,
   ) async {
     const _extra = <String, dynamic>{};
@@ -228,12 +241,37 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${id}',
+          '/schedules/${userId}/{scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data!;
+    return value;
+  }
+
+  @override
+  Future<List<UserResponse>> getUsers() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<UserResponse>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => UserResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

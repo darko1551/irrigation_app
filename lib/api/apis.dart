@@ -1,8 +1,14 @@
 class Apis {
-  static const String sensors = '/sensors';
-  static const String sensorsDelete = '/sensors/{id}';
-  static const String sensorsEdit = '/sensors/{id}';
-  static const String schedules = '/schedules/{id}';
-  static const String schedulesAdd = '/schedules/{sensorId}';
-  static const String schedulesActivation = "/schedules/activation/{id}";
+  static const String getSensors = '/sensors/{userId}';
+  static const String getSensorByMac = '/sensors/{userId}/{mac}';
+  static const String addSensor = '/sensors';
+  static const String updateSensor = '/sensors/{userId}/{sensorId}';
+  static const String deleteSensor = '/sensors/{userId}/{sensorId}';
+  static const String getSchedules = '/schedules/{userId}/{sensorId}';
+  static const String addSchedule = '/schedules/{userId}/{sensorId}';
+  static const String deleteSchedule = '/schedules/{userId}/{scheduleId}';
+  static const String updateSchedule = '/schedules/{userId}/{scheduleId}';
+  static const String activationActivationUpdate =
+      '/schedules/activation/{userId}/{scheduleId}';
+  static const String getUsers = '/users';
 }

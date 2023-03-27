@@ -57,7 +57,7 @@ class _ValveListItemState extends State<ValveListItem> {
   Widget build(BuildContext context) {
     localization = AppLocalizations.of(context)!;
     var size = MediaQuery.of(context).size;
-    bool disabled = checkEnabled() ? false : true;
+    //bool disabled = checkEnabled() ? false : true;
 
     return Container(
       width: double.maxFinite,
@@ -80,22 +80,25 @@ class _ValveListItemState extends State<ValveListItem> {
                     !widget.sensor.state
                         ? Icon(
                             Icons.circle,
-                            color: disabled
+                            color: !checkEnabled()
                                 ? Theme.of(context).disabledColor
                                 : Colors.orange,
                             size: 15,
                           )
                         : Icon(
                             Icons.circle,
-                            color: disabled
+                            color: !checkEnabled()
                                 ? Theme.of(context).disabledColor
                                 : Colors.green,
                             size: 15,
                           ),
-                    Text(
-                      "  ${widget.sensor.name}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Text(
+                        "  ${widget.sensor.name}",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -106,7 +109,8 @@ class _ValveListItemState extends State<ValveListItem> {
                 TileInfoRowWidget(
                   text: "${widget.sensor.sensorData.humidity ?? "N/A"} %",
                   icon: Icons.water_drop_outlined,
-                  color: disabled ? Theme.of(context).disabledColor : null,
+                  color:
+                      !checkEnabled() ? Theme.of(context).disabledColor : null,
                   size: 20,
                 ),
                 const SizedBox(
@@ -115,7 +119,8 @@ class _ValveListItemState extends State<ValveListItem> {
                 TileInfoRowWidget(
                   text: "${widget.sensor.sensorData.temperature ?? "N/A"} °C",
                   icon: Icons.thermostat_outlined,
-                  color: disabled ? Theme.of(context).disabledColor : null,
+                  color:
+                      !checkEnabled() ? Theme.of(context).disabledColor : null,
                   size: 20,
                 ),
               ],
@@ -127,7 +132,7 @@ class _ValveListItemState extends State<ValveListItem> {
             child: TileInfoColumnWidget(
               text: _timeString == "" ? localization.noSchedule : _timeString,
               icon: Icons.date_range_outlined,
-              color: disabled ? Theme.of(context).disabledColor : null,
+              color: !checkEnabled() ? Theme.of(context).disabledColor : null,
               size: 30,
             ),
           ),
@@ -139,7 +144,7 @@ class _ValveListItemState extends State<ValveListItem> {
                   ? localization.liters(widget.sensor.waterUsageLast!)
                   : "N/A",
               icon: Icons.water,
-              color: disabled ? Theme.of(context).disabledColor : null,
+              color: !checkEnabled() ? Theme.of(context).disabledColor : null,
               size: 30,
             ),
           )

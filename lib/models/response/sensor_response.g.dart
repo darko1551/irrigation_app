@@ -13,10 +13,7 @@ SensorResponse _$SensorResponseFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       mac: json['mac'] as String,
-      group: json['group'] == null
-          ? null
-          : GroupNoSensorResponse.fromJson(
-              json['group'] as Map<String, dynamic>),
+      user: UserNoSensorResponse.fromJson(json['user'] as Map<String, dynamic>),
       sensorData:
           SensorData.fromJson(json['sensorData'] as Map<String, dynamic>),
       humidityThreshold: (json['humidityThreshold'] as num).toDouble(),
@@ -29,7 +26,7 @@ SensorResponse _$SensorResponseFromJson(Map<String, dynamic> json) =>
           .map((e) =>
               IrregationScheduleResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      groupId: json['groupId'] as int?,
+      userId: json['userId'] as int,
       state: json['state'] as bool,
     );
 
@@ -40,13 +37,13 @@ Map<String, dynamic> _$SensorResponseToJson(SensorResponse instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'mac': instance.mac,
-      'group': instance.group,
+      'user': instance.user,
       'sensorData': instance.sensorData,
       'humidityThreshold': instance.humidityThreshold,
       'lastActive': instance.lastActive?.toIso8601String(),
       'waterUsageLast': instance.waterUsageLast,
       'waterUsageAllTime': instance.waterUsageAllTime,
       'irregationSchedules': instance.irregationSchedules,
-      'groupId': instance.groupId,
+      'userId': instance.userId,
       'state': instance.state,
     };

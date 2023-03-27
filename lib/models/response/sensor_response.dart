@@ -1,5 +1,5 @@
-import 'package:irrigation/models/response/group_no_sensor_response.dart';
 import 'package:irrigation/models/response/irregation_schedule_response.dart';
+import 'package:irrigation/models/response/user_no_sensor_response.dart';
 import 'package:irrigation/models/sensor_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,14 +12,14 @@ class SensorResponse {
   double latitude;
   double longitude;
   String mac;
-  GroupNoSensorResponse? group;
+  UserNoSensorResponse user;
   SensorData sensorData;
   double humidityThreshold;
   DateTime? lastActive;
   double? waterUsageLast;
   double? waterUsageAllTime;
   List<IrregationScheduleResponse> irregationSchedules;
-  int? groupId;
+  int userId;
   bool state;
 
   SensorResponse(
@@ -28,14 +28,14 @@ class SensorResponse {
       required this.latitude,
       required this.longitude,
       required this.mac,
-      this.group,
+      required this.user,
       required this.sensorData,
       required this.humidityThreshold,
       this.lastActive,
       this.waterUsageLast,
       this.waterUsageAllTime,
       required this.irregationSchedules,
-      this.groupId,
+      required this.userId,
       required this.state});
 
   factory SensorResponse.fromJson(Map<String, dynamic> json) =>
