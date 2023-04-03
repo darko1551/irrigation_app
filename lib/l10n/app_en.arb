@@ -71,5 +71,8 @@
 "liters": "{count, plural, =1{{count} liter} other{{count} liters}}",
 "croatian": "Croatian",
 "english": "English",
-"language": "Language"
+"language": "Language",
+"login": "Login",
+"unsuccessfullLogin": "Unsuccessful login",
+"notLoggedIn" : "You are not logged in!"
 }

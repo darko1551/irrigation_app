@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/feature/about/page/about_page.dart';
 import 'package:irrigation/feature/home/page/home_page.dart';
+import 'package:irrigation/feature/login/login_page.dart';
 import 'package:irrigation/feature/map/page/map_page.dart';
 import 'package:irrigation/feature/sensor_add/page/sensor_add_page.dart';
 import 'package:irrigation/feature/settings/page/settings_page.dart';
@@ -81,13 +82,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           const Divider(),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => Get.to(() => const SettingsPage()),
+            onTap: () => Get.offAll(() => const SettingsPage()),
             child: DrawerElementWidget(
                 icon: const Icon(Icons.settings), text: localization.settings),
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () => Get.to(() => const AboutPage()),
+            onTap: () => Get.offAll(() => const AboutPage()),
             child: DrawerElementWidget(
                 icon: const Icon(Icons.info_outline),
                 text: localization.aboutApplication),
@@ -95,9 +96,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           const Divider(
             thickness: 1,
           ),
-          DrawerElementWidget(
-              icon: const Icon(Icons.logout_outlined),
-              text: localization.logOut),
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              Provider.of<UserProvider>(context, listen: false)
+                  .setClientCredentials(null);
+              Get.offAll(() => const LoginPage());
+            },
+            child: DrawerElementWidget(
+                icon: const Icon(Icons.logout_outlined),
+                text: localization.logOut),
+          ),
         ],
       ),
     );

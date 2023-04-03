@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:irrigation/localization_preference.dart';
+import 'package:irrigation/preferences/localization_preference.dart';
 
 class LocalizationProvider extends ChangeNotifier {
   LocalizationPreference localizationPreference = LocalizationPreference();

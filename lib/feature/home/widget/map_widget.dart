@@ -25,6 +25,7 @@ class _MapWidgetState extends State<MapWidget> {
   bool satelite = false;
   late LatLng currentLocation;
   List<Marker> markers = [];
+  Timer? timer;
 
   bool checkEnabled(SensorResponse sensor) {
     if (sensor.lastActive == null) {
@@ -84,7 +85,7 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     _mapController = MapController();
     markers = getMarkers();
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
         markers.clear();
@@ -98,6 +99,7 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void dispose() {
     _mapController.dispose();
+    timer?.cancel();
     super.dispose();
   }
 

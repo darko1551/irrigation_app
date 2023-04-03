@@ -19,32 +19,32 @@ abstract class ApiClient {
   Future<List<SensorResponse>> getSensors(@Path() int userId);
 
   @DELETE(Apis.deleteSensor)
-  Future<void> deleteSensor(@Path() int userId, int sensorId);
+  Future<void> deleteSensor(@Path() int userId, @Path() int sensorId);
 
   @POST(Apis.addSensor)
   Future<int> addSensor(@Body() SensorRequest sensor);
 
   @PUT(Apis.updateSensor)
   Future<int> updateSensor(
-      @Path() int userId, int sensorId, @Body() SensorUpdate sensor);
+      @Path() int userId, @Path() int sensorId, @Body() SensorUpdate sensor);
 
   @GET(Apis.getSchedules)
   Future<List<IrregationScheduleResponse>> getSchedules(
-      @Path() int userId, int sensorId);
+      @Path() int userId, @Path() int sensorId);
 
   @PUT(Apis.activationActivationUpdate)
   Future<int> activationActivationUpdate(
-      @Path() int userId, int scheduleId, @Body() bool status);
+      @Path() int userId, @Path() int scheduleId, @Body() bool status);
 
   @POST(Apis.addSchedule)
-  Future<int> addSchedule(@Path() int userId, int sensorId,
+  Future<int> addSchedule(@Path() int userId, @Path() int sensorId,
       @Body() IrrigationScheduleRequest scheduleRequest);
 
   @DELETE(Apis.deleteSchedule)
-  Future<void> deleteSchedule(@Path() int userId, int scheduleId);
+  Future<void> deleteSchedule(@Path() int userId, @Path() int scheduleId);
 
   @PUT(Apis.updateSchedule)
-  Future<int> updateSchedule(@Path() int userId, int scheduleid,
+  Future<int> updateSchedule(@Path() int userId, @Path() int scheduleId,
       @Body() IrrigationScheduleRequest scheduleRequest);
 
   @GET(Apis.getUsers)

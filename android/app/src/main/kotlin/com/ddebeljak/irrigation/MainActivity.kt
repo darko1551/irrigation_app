@@ -1,4 +1,4 @@
-package com.example.irrigation
+package com.ddebeljak.irrigation
 
 import io.flutter.embedding.android.FlutterActivity
 

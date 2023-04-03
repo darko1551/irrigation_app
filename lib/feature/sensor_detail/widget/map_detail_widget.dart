@@ -20,6 +20,7 @@ class MapDetailWidget extends StatefulWidget {
 
 class _MapDetailWidgetState extends State<MapDetailWidget> {
   List<Marker> markers = [];
+  Timer? timer;
 
   List<Marker> getMarkers() {
     List<Marker> _markers = [];
@@ -62,7 +63,7 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
   @override
   void initState() {
     markers = getMarkers();
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
         markers.clear();
@@ -71,6 +72,12 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   bool checkEnabled(SensorResponse sensor) {

@@ -61,7 +61,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/sensors/${userId}/{sensorId}',
+          '/sensors/${userId}/${sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -109,7 +109,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/sensors/${userId}/{sensorId}',
+          '/sensors/${userId}/${sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -135,7 +135,7 @@ class _ApiClient implements ApiClient {
     )
             .compose(
               _dio.options,
-              '/schedules/${userId}/{sensorId}',
+              '/schedules/${userId}/${sensorId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -164,7 +164,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/activation/${userId}/{scheduleId}',
+          '/schedules/activation/${userId}/${scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -191,7 +191,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${userId}/{sensorId}',
+          '/schedules/${userId}/${sensorId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -216,7 +216,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${userId}/{scheduleId}',
+          '/schedules/${userId}/${scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -226,7 +226,7 @@ class _ApiClient implements ApiClient {
   @override
   Future<int> updateSchedule(
     userId,
-    scheduleid,
+    scheduleId,
     scheduleRequest,
   ) async {
     const _extra = <String, dynamic>{};
@@ -241,7 +241,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/schedules/${userId}/{scheduleId}',
+          '/schedules/${userId}/${scheduleId}',
           queryParameters: queryParameters,
           data: _data,
         )

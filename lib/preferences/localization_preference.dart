@@ -12,6 +12,9 @@ class LocalizationPreference {
 
   Future<Locale> getLocale() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(LANGUAGE_CODE) == null) {
+      return _locale("en");
+    }
     return _locale(prefs.getString(LANGUAGE_CODE)!);
   }
 

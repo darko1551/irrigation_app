@@ -44,7 +44,8 @@ class _ValveListItemState extends State<ValveListItem> {
   void initState() {
     super.initState();
     _timeString = "";
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    timer =
+        Timer.periodic(const Duration(seconds: 10), (Timer t) => _getTime());
   }
 
   @override
@@ -107,7 +108,8 @@ class _ValveListItemState extends State<ValveListItem> {
                   height: 10,
                 ),
                 TileInfoRowWidget(
-                  text: "${widget.sensor.sensorData.humidity ?? "N/A"} %",
+                  text:
+                      "${widget.sensor.sensorData.humidity == null ? "N/A" : widget.sensor.sensorData.humidity!.toStringAsFixed(2)} %",
                   icon: Icons.water_drop_outlined,
                   color:
                       !checkEnabled() ? Theme.of(context).disabledColor : null,
@@ -117,7 +119,8 @@ class _ValveListItemState extends State<ValveListItem> {
                   height: 5,
                 ),
                 TileInfoRowWidget(
-                  text: "${widget.sensor.sensorData.temperature ?? "N/A"} °C",
+                  text:
+                      "${widget.sensor.sensorData.temperature == null ? "N/A" : widget.sensor.sensorData.temperature!.toStringAsFixed(2)} °C",
                   icon: Icons.thermostat_outlined,
                   color:
                       !checkEnabled() ? Theme.of(context).disabledColor : null,

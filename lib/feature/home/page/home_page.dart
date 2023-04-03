@@ -28,6 +28,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    initList();
+  }
+
+  initList() async {
+    Provider.of<NetworkProvider>(context, listen: false).networkStatus;
+    if (!networkStatus) {
+      await Provider.of<SensorProvider>(context, listen: false)
+          .initializeList();
+    }
   }
 
   Future<void> deleteSensorDialog(BuildContext context, SensorResponse sensor) {
@@ -46,9 +55,6 @@ class _HomePageState extends State<HomePage> {
     var size = MediaQuery.of(context).size;
     networkStatus =
         Provider.of<NetworkProvider>(context, listen: true).networkStatus;
-    if (networkStatus) {
-      Provider.of<SensorProvider>(context, listen: false).initializeList();
-    }
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: networkStatus
@@ -118,8 +124,9 @@ class _HomePageState extends State<HomePage> {
                                   itemCount: value.getSensors.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () => Get.to(SensorDetailPage(
-                                          sensor: value.getSensors[index])),
+                                      onTap: () => Get.to(() =>
+                                          SensorDetailPage(
+                                              sensor: value.getSensors[index])),
                                       onLongPress: () => deleteSensorDialog(
                                           context, value.getSensors[index]),
                                       child: Padding(

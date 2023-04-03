@@ -4,17 +4,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/api/api_client.dart';
+import 'package:irrigation/interceptors/interceptors.dart';
+import 'package:irrigation/models/client_credentials.dart';
 import 'package:irrigation/models/request/irrigation_schedule_request.dart';
 import 'package:irrigation/models/request/sensor_request.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
-import 'package:irrigation/models/response/user_response.dart';
 import 'package:irrigation/models/update/sensor_update.dart';
 import 'package:collection/collection.dart';
 import 'package:irrigation/provider/user_provider.dart';
-import 'package:provider/provider.dart';
 
 class SensorProvider extends ChangeNotifier {
   final dio = Dio();
+
+  late ApiClient apiClient;
   late UserProvider userProvider;
 
   List<SensorResponse> _sensorList = [];
@@ -24,9 +26,27 @@ class SensorProvider extends ChangeNotifier {
     return _sensorList;
   }
 
+  /*dynamic requestInterceptor(RequestOptions options) async {
+    ClientCredentials clientCredentials = userProvider.clientCredentials;
+    if (DateTime.now().compareTo(clientCredentials.expiration!) > 0) {
+      //refresh
+    }
+    options.headers.addAll({"Token": clientCredentials.accessToken});
+
+    return options;
+  }*/
+
   Future<void> initializeList() async {
     isLoading = true;
-    final apiClient = ApiClient(dio);
+
+    /*dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) => requestInterceptor(options),
+    ));*/
+
+    apiClient = ApiClient(dio);
+    dio.interceptors
+        .add(ApiInterceptor(clientCredentials: userProvider.clientCredentials));
+    dio.interceptors.add(LogInterceptor(requestBody: true));
     _sensorList = await apiClient.getSensors(userProvider.user.userId);
     isLoading = false;
     notifyListeners();
@@ -35,8 +55,6 @@ class SensorProvider extends ChangeNotifier {
   Future<void> refreshList() async {
     isLoading = true;
     notifyListeners();
-    final dio = Dio();
-    final apiClient = ApiClient(dio);
     _sensorList = await apiClient.getSensors(userProvider.user.userId);
     isLoading = false;
     notifyListeners();
@@ -49,8 +67,6 @@ class SensorProvider extends ChangeNotifier {
   Future<void> removeSensor(int sensorId) async {
     isLoading = true;
     notifyListeners();
-    final dio = Dio();
-    final apiClient = ApiClient(dio);
     await apiClient.deleteSensor(userProvider.user.userId, sensorId);
     refreshList();
     isLoading = false;
@@ -62,7 +78,6 @@ class SensorProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final apiClient = ApiClient(dio);
       res = await apiClient.addSensor(sensor);
     } on DioError catch (e) {
       e.error.printError();
@@ -81,8 +96,6 @@ class SensorProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final dio = Dio();
-      final apiClient = ApiClient(dio);
       res = await apiClient.updateSensor(
           userProvider.user.userId, sensorId, sensor);
     } on DioError catch (e) {
@@ -102,7 +115,6 @@ class SensorProvider extends ChangeNotifier {
     notifyListeners();
     try {
       dio.options.contentType = Headers.jsonContentType;
-      final apiClient = ApiClient(dio);
       res = await apiClient.activationActivationUpdate(
           userProvider.user.userId, scheduleId, status);
     } on DioError catch (e) {
@@ -125,7 +137,6 @@ class SensorProvider extends ChangeNotifier {
     notifyListeners();
     try {
       //dio.options.contentType = Headers.jsonContentType;
-      final apiClient = ApiClient(dio);
       res = await apiClient.addSchedule(
           userProvider.user.userId, sensorId, scheduleRequest);
     } on DioError catch (e) {
@@ -151,8 +162,6 @@ class SensorProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      //dio.options.contentType = Headers.jsonContentType;
-      final apiClient = ApiClient(dio);
       res = await apiClient.updateSchedule(
           userProvider.user.userId, scheduleId, scheduleRequest);
     } on DioError catch (e) {
@@ -171,8 +180,6 @@ class SensorProvider extends ChangeNotifier {
   Future<void> removeSchedule(int scheduleId) async {
     isLoading = true;
     notifyListeners();
-    final dio = Dio();
-    final apiClient = ApiClient(dio);
     await apiClient.deleteSchedule(userProvider.user.userId, scheduleId);
     refreshList();
     isLoading = false;

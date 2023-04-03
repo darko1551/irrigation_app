@@ -71,5 +71,8 @@
 "liters": "{count, plural, =1{{count} litra} few{{count} litre} many{{count} litara} other{{count} litara}}",
 "croatian": "Hrvatski",
 "english": "Engleski",
-"language": "Jezik"
+"language": "Jezik",
+"login": "Prijava",
+"unsuccessfullLogin": "Neuspješna prijava",
+"notLoggedIn" : "Niste prijavljeni!"
 }
