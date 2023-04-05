@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/feature/about/page/about_page.dart';
+import 'package:irrigation/feature/bluetooth/page/bluetooth_scan_page.dart';
 import 'package:irrigation/feature/home/page/home_page.dart';
 import 'package:irrigation/feature/login/login_page.dart';
 import 'package:irrigation/feature/map/page/map_page.dart';
@@ -80,6 +81,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               child: DrawerElementWidget(
                   icon: const Icon(Icons.add), text: localization.addSensor)),
           const Divider(),
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => Get.offAll(() => const BluetoothScanPage()),
+            child: DrawerElementWidget(
+                icon: const Icon(Icons.bluetooth),
+                text: localization.bluetoothScan),
+          ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => Get.offAll(() => const SettingsPage()),
