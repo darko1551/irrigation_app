@@ -5,6 +5,7 @@ import 'package:irrigation/feature/bluetooth/widgets/bluetooth_list_item_widget.
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:irrigation/feature/home/widget/drawer_widget.dart';
 
 class BluetoothScanPage extends StatefulWidget {
   const BluetoothScanPage({super.key});
@@ -26,15 +27,15 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
   }
 
   final noBluetoothSnackbar = SnackBar(
-    content: const Column(
+    content: Column(
       children: [
         Text(
-          "Bluetooth disabled",
-          style: TextStyle(
+          AppLocalizations.of(Get.context!)!.bluetoothDisabled,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text("Open bluetooth settings!"),
+        Text(AppLocalizations.of(Get.context!)!.openBluetoothSettings),
       ],
     ),
     action: SnackBarAction(
@@ -99,7 +100,6 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
           )
         ],
       ),
-
       body: SingleChildScrollView(
         child: Column(children: [
           StreamBuilder<List<ScanResult>>(

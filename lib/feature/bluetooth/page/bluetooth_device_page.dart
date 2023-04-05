@@ -3,6 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:irrigation/provider/bluetooth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BluetoothDevicePage extends StatefulWidget {
   const BluetoothDevicePage({super.key, required this.device});
@@ -14,6 +15,8 @@ class BluetoothDevicePage extends StatefulWidget {
 
 class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
   late BluetoothDevice _device;
+  late AppLocalizations localization;
+
   BluetoothProvider bluetoothProvider =
       Provider.of<BluetoothProvider>(Get.context!, listen: false);
 
@@ -35,6 +38,7 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
 
   @override
   Widget build(BuildContext context) {
+    localization = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(_device.name),
@@ -47,8 +51,8 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
                       : bluetoothProvider.connect,
               child: Text(!Provider.of<BluetoothProvider>(context, listen: true)
                       .connected
-                  ? "Connect"
-                  : "Disconnect"))
+                  ? localization.connect
+                  : localization.disconnect))
         ],
       ),
       body: Column(
@@ -61,8 +65,8 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
               : Container(),
           Text(
             Provider.of<BluetoothProvider>(context, listen: true).connected
-                ? "Connected"
-                : "Disconnected",
+                ? localization.connected
+                : localization.disconnected,
             style: const TextStyle(fontSize: 25),
           ),
           Text(
@@ -70,8 +74,8 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
                 ? ""
                 : Provider.of<BluetoothProvider>(context, listen: true)
                         .accessGranted
-                    ? "Access granted"
-                    : "Access not granted",
+                    ? localization.accessGranted
+                    : localization.accessDenied,
             style: const TextStyle(fontSize: 25),
           ),
           const SizedBox(
@@ -88,7 +92,7 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
                             bluetoothProvider.writeCommand("ab.openv\n");
                           }
                         : null,
-                    child: const Text("Open")),
+                    child: Text(localization.open)),
                 const SizedBox(
                   width: 15,
                 ),
@@ -99,7 +103,7 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
                             bluetoothProvider.writeCommand("ab.closev\n");
                           }
                         : null,
-                    child: const Text("Close"))
+                    child: Text(localization.close))
               ],
             ),
           ),

@@ -76,5 +76,15 @@
 "unsuccessfullLogin": "Neuspješna prijava",
 "notLoggedIn" : "Niste prijavljeni!",
 "bluetoothScan" : "Bluetooth scan",
-"scan" : "Skeniraj"
+"scan" : "Skeniraj",
+"connect" : "Spoji",
+"disconnect" : "Odspoji",
+"connected" : "Spojeno",
+"disconnected" : "Odspojeno",
+"accessGranted" : "Pristup dozvoljen",
+"accessDenied" : "Pristup nije dozvoljen",
+"open" : "Otvori",
+"close" : "Zatvori",
+"bluetoothDisabled" : "Bluetooth isključen",
+"openBluetoothSettings" : "Otvori bluetooth postavke"
 }

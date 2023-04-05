@@ -76,5 +76,15 @@
 "unsuccessfullLogin": "Unsuccessful login",
 "notLoggedIn" : "You are not logged in!",
 "bluetoothScan" : "Bluetooth scan",
-"scan" : "Scan"
+"scan" : "Scan",
+"connect" : "Connect",
+"disconnect" : "Disconnect",
+"connected" : "Connected",
+"disconnected" : "Disconnected",
+"accessGranted" : "Access granted",
+"accessDenied" : "Access denied",
+"open" : "Open",
+"close" : "Close",
+"bluetoothDisabled" : "Bluetooth disabled!",
+"openBluetoothSettings" : "Open bluetooth settings"
 }
