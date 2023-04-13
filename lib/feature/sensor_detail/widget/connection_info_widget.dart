@@ -9,6 +9,15 @@ class ConnectionInfoWidget extends StatelessWidget {
 
   final SensorResponse sensor;
   final bool enabled;
+
+  bool checkUsed(SensorResponse sensor) {
+    if (sensor.state == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context);
@@ -42,9 +51,9 @@ class ConnectionInfoWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.circle,
-                  color: !enabled
+                  color: !enabled || !checkUsed(sensor)
                       ? Colors.grey
-                      : sensor.state
+                      : sensor.state!
                           ? Colors.green
                           : Colors.orange,
                   size: 15,
@@ -52,7 +61,11 @@ class ConnectionInfoWidget extends StatelessWidget {
               ],
             ),
             Text(
-              sensor.state ? " ${localization.open}" : " ${localization.close}",
+              sensor.state == null
+                  ? " ${localization.unknown}"
+                  : sensor.state!
+                      ? " ${localization.opened}"
+                      : " ${localization.closed}",
               style: const TextStyle(fontSize: 20),
             ),
           ],

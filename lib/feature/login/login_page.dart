@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:get/get.dart';
@@ -50,15 +51,24 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void initialization() async {
+    bool clientInitialized = false;
     ClientCredentials? clientCredentials =
         Provider.of<UserProvider>(context, listen: false).clientCredentials;
     if (clientCredentials != null) {
       await Provider.of<UserProvider>(context, listen: false)
           .setClientCredentials(clientCredentials);
       if (mounted) {
-        await Provider.of<UserProvider>(context, listen: false).initUser();
+        try {
+          await Provider.of<UserProvider>(context, listen: false).initUser();
+          clientInitialized = true;
+        } catch (e) {
+          Get.snackbar("Error", e.toString(),
+              backgroundColor: Theme.of(context).cardColor);
+        }
       }
-      Get.offAll(() => const HomePage());
+      if (clientInitialized) {
+        Get.offAll(() => const HomePage());
+      }
     }
   }
 
@@ -88,7 +98,10 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     onPressed: networkStatus
                         ? () async {
-                            //Provider.of<UserProvider>(context).setClientCredentials(null);
+                            //await Provider.of<UserProvider>(context,
+                            //      listen: false)
+                            // .setClientCredentials(null);
+                            bool clientInitialized = false;
                             ClientCredentials? clientCredentials =
                                 Provider.of<UserProvider>(context,
                                         listen: false)
@@ -101,12 +114,21 @@ class _LoginPageState extends State<LoginPage> {
                                         listen: false)
                                     .setClientCredentials(clientCredentials);
                                 if (mounted) {
-                                  await Provider.of<UserProvider>(context,
-                                          listen: false)
-                                      .initUser();
+                                  try {
+                                    await Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .initUser();
+                                    clientInitialized = true;
+                                  } catch (e) {
+                                    Get.snackbar("Error", e.toString(),
+                                        backgroundColor:
+                                            Theme.of(context).cardColor);
+                                  }
                                 }
                               }
-                              Get.offAll(() => const HomePage());
+                              if (clientInitialized) {
+                                Get.offAll(() => const HomePage());
+                              }
                             }
                           }
                         : null,

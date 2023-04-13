@@ -6,7 +6,7 @@ part 'sensor_data.g.dart';
 class SensorData {
   double? temperature;
   double? humidity;
-  bool state;
+  bool? state;
   DateTime? time;
 
   SensorData(this.temperature, this.humidity, this.state, this.time);

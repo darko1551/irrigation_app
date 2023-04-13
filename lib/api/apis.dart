@@ -11,4 +11,6 @@ class Apis {
   static const String activationActivationUpdate =
       '/schedules/activation/{userId}/{scheduleId}';
   static const String getUsers = '/users';
+  static const String openValve = '/valve/open/{uuid}';
+  static const String closeValve = '/valve/close/{uuid}';
 }

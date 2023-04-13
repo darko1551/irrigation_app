@@ -49,4 +49,10 @@ abstract class ApiClient {
 
   @GET(Apis.getUsers)
   Future<List<UserResponse>> getUsers();
+
+  @POST(Apis.openValve)
+  Future<void> openValve(@Path() String uuid);
+
+  @POST(Apis.closeValve)
+  Future<void> closeValve(@Path() String uuid);
 }

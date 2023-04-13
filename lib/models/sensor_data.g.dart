@@ -9,7 +9,7 @@ part of 'sensor_data.dart';
 SensorData _$SensorDataFromJson(Map<String, dynamic> json) => SensorData(
       (json['temperature'] as num?)?.toDouble(),
       (json['humidity'] as num?)?.toDouble(),
-      json['state'] as bool,
+      json['state'] as bool?,
       json['time'] == null ? null : DateTime.parse(json['time'] as String),
     );
 

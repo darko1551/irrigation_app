@@ -78,21 +78,27 @@ class _ValveListItemState extends State<ValveListItem> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    !widget.sensor.state
+                    widget.sensor.state == null
                         ? Icon(
                             Icons.circle,
-                            color: !checkEnabled()
-                                ? Theme.of(context).disabledColor
-                                : Colors.orange,
+                            color: Theme.of(context).disabledColor,
                             size: 15,
                           )
-                        : Icon(
-                            Icons.circle,
-                            color: !checkEnabled()
-                                ? Theme.of(context).disabledColor
-                                : Colors.green,
-                            size: 15,
-                          ),
+                        : !widget.sensor.state!
+                            ? Icon(
+                                Icons.circle,
+                                color: !checkEnabled()
+                                    ? Theme.of(context).disabledColor
+                                    : Colors.orange,
+                                size: 15,
+                              )
+                            : Icon(
+                                Icons.circle,
+                                color: !checkEnabled()
+                                    ? Theme.of(context).disabledColor
+                                    : Colors.green,
+                                size: 15,
+                              ),
                     Expanded(
                       child: Text(
                         "  ${widget.sensor.name}",
@@ -144,7 +150,8 @@ class _ValveListItemState extends State<ValveListItem> {
             width: size.width * 0.33,
             child: TileInfoColumnWidget(
               text: widget.sensor.waterUsageLast != null
-                  ? localization.liters(widget.sensor.waterUsageLast!)
+                  ? localization.liters(double.parse(
+                      widget.sensor.waterUsageLast!.toStringAsFixed(1)))
                   : "N/A",
               icon: Icons.water,
               color: !checkEnabled() ? Theme.of(context).disabledColor : null,

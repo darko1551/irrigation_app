@@ -8,6 +8,7 @@ part 'sensor_response.g.dart';
 @JsonSerializable()
 class SensorResponse {
   int sensorId;
+  String uuid;
   String name;
   double latitude;
   double longitude;
@@ -20,10 +21,11 @@ class SensorResponse {
   double? waterUsageAllTime;
   List<IrregationScheduleResponse> irregationSchedules;
   int userId;
-  bool state;
+  bool? state;
 
   SensorResponse(
       {required this.sensorId,
+      required this.uuid,
       required this.name,
       required this.latitude,
       required this.longitude,
@@ -36,7 +38,7 @@ class SensorResponse {
       this.waterUsageAllTime,
       required this.irregationSchedules,
       required this.userId,
-      required this.state});
+      this.state});
 
   factory SensorResponse.fromJson(Map<String, dynamic> json) =>
       _$SensorResponseFromJson(json);

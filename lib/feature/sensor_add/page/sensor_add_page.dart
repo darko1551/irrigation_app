@@ -76,7 +76,8 @@ class _SensorAddPageState extends State<SensorAddPage> {
         Get.snackbar(localization.success, localization.sensorAddedSuccessfully,
             backgroundColor: Theme.of(context).cardColor);
       } catch (e) {
-        Get.snackbar(localization.warning, e.toString());
+        Get.snackbar(localization.warning, e.toString(),
+            backgroundColor: Theme.of(context).cardColor);
       }
     }
     return success;

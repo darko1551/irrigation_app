@@ -58,6 +58,9 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.35,
+          ),
           Provider.of<BluetoothProvider>(context, listen: true).loading
               ? const LinearProgressIndicator(
                   color: Colors.red,
@@ -103,8 +106,21 @@ class _BluetoothDevicePageState extends State<BluetoothDevicePage> {
                             bluetoothProvider.writeCommand("ab.closev\n");
                           }
                         : null,
-                    child: Text(localization.close))
+                    child: Text(localization.close)),
               ],
+            ),
+          ),
+          Expanded(child: Container()),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: TextButton(
+              onPressed:
+                  bluetoothProvider.connected && bluetoothProvider.accessGranted
+                      ? () {
+                          bluetoothProvider.writeCommand("ab.sds\n");
+                        }
+                      : null,
+              child: Text(localization.setDefaultScheduler),
             ),
           ),
         ],

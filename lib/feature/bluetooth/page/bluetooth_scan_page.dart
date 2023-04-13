@@ -39,7 +39,7 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
       ],
     ),
     action: SnackBarAction(
-      label: "Settings",
+      label: AppLocalizations.of(Get.context!)!.settings,
       onPressed: () {
         AppSettings.openBluetoothSettings();
       },
@@ -69,7 +69,7 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
   Widget build(BuildContext context) {
     localization = AppLocalizations.of(context)!;
     return Scaffold(
-      //drawer: const DrawerWidget(),
+      drawer: const DrawerWidget(),
       appBar: AppBar(
         title: Text(localization.bluetoothScan),
         actions: [

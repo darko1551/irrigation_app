@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
 import 'package:irrigation/constants/map_constants.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapDetailWidget extends StatefulWidget {
   const MapDetailWidget({super.key, required this.sensor});
@@ -47,9 +49,10 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
                     child: Icon(
                       Icons.circle,
                       size: 15,
-                      color: !checkEnabled(sensorProvided)
+                      color: !checkEnabled(sensorProvided) ||
+                              !checkUsed(sensorProvided)
                           ? Colors.grey
-                          : sensorProvided.state
+                          : sensorProvided.state!
                               ? Colors.green
                               : Colors.orange,
                     ),
@@ -66,6 +69,7 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
+
         markers.clear();
         markers = getMarkers();
         setState(() {});
@@ -84,6 +88,14 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
     if (sensor.lastActive == null) {
       return false;
     } else if (DateTime.now().difference(sensor.lastActive!).inHours > 24) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkUsed(SensorResponse sensor) {
+    if (sensor.state == null) {
       return false;
     } else {
       return true;

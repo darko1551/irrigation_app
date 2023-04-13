@@ -12,14 +12,12 @@ import 'package:irrigation/models/client_credentials.dart';
 import 'package:irrigation/preferences/credential_preference.dart';
 import 'package:irrigation/provider/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ApiInterceptor extends Interceptor {
   ClientCredentials? clientCredentials;
   ApiInterceptor({required this.clientCredentials});
   final _tokenLock = Lock();
-
-  bool _isRequestInProgress = false;
-  Queue<Completer<dio_response.Response>> _requestQueue = Queue();
 
   @override
   void onRequest(
@@ -33,10 +31,29 @@ class ApiInterceptor extends Interceptor {
       }
     }
 
-    options.headers['Authorization'] =
-        'Bearer ${clientCredentials!.accessToken}';
+    /*options.headers['Authorization'] =
+        'Bearer ${clientCredentials!.accessToken}';*/
 
-    super.onRequest(options, handler);
+    int maxAttempts = 3;
+    int retry = 0;
+    while (retry < maxAttempts) {
+      if (clientCredentials != null) {
+        options.headers['Authorization'] =
+            'Bearer ${clientCredentials!.accessToken}';
+        retry = 0;
+        super.onRequest(options, handler);
+        break;
+      } else {
+        retry++;
+        await Future.delayed(const Duration(seconds: 1));
+        if (retry == maxAttempts) {
+          Get.snackbar(AppLocalizations.of(Get.context!)!.error,
+              AppLocalizations.of(Get.context!)!.somethingWentWrong,
+              backgroundColor: Theme.of(Get.context!).cardColor);
+          logOut();
+        }
+      }
+    }
   }
 
   @override
@@ -47,7 +64,6 @@ class ApiInterceptor extends Interceptor {
         return handler.resolve(await _retry(dioError.requestOptions));
       }
     }
-
     super.onError(dioError, handler);
   }
 
@@ -85,13 +101,17 @@ class ApiInterceptor extends Interceptor {
           print("Refreshed");
         } catch (e) {
           print('Error refreshing token: $e');
-          clientCredentials = null;
-          await Provider.of<UserProvider>(Get.context!, listen: false)
-              .setClientCredentials(null);
-          Get.offAll(() => const LoginPage());
+          await logOut();
         }
       }
     });
+  }
+
+  Future<void> logOut() async {
+    clientCredentials = null;
+    await Provider.of<UserProvider>(Get.context!, listen: false)
+        .setClientCredentials(null);
+    Get.offAll(() => const LoginPage());
   }
 
   Future<dio_response.Response<dynamic>> _retry(

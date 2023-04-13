@@ -34,7 +34,7 @@ class DeviceInfoWidget extends StatelessWidget {
           ),
           DeviceInfoElementWidget(
             icon: Icons.thermostat,
-            text: "${sensor.sensorData.temperature ?? "N/A"} °C",
+            text: "${sensorProvided!.sensorData.temperature ?? "N/A"} °C",
             title: localization.temperature,
           ),
           const SizedBox(
@@ -42,28 +42,30 @@ class DeviceInfoWidget extends StatelessWidget {
           ),
           DeviceInfoElementWidget(
               icon: Icons.water_drop,
-              text: "${sensor.sensorData.humidity ?? "N/A"} %",
+              text: "${sensorProvided.sensorData.humidity ?? "N/A"} %",
               title: localization.humidity),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.waterfall_chart_rounded,
-              text: "${sensorProvided!.humidityThreshold} %",
+              text: "${sensorProvided.humidityThreshold} %",
               title: localization.humidityThreshold),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.data_usage,
-              text: "${sensor.waterUsageLast ?? "N/A"} l",
+              text:
+                  "${sensorProvided.waterUsageLast != null ? sensorProvided.waterUsageLast!.toStringAsFixed(1) : "N/A"} l",
               title: localization.waterUsageLast),
           const SizedBox(
             height: 8,
           ),
           DeviceInfoElementWidget(
               icon: Icons.circle_outlined,
-              text: "${sensor.waterUsageAllTime ?? "N/A"} l",
+              text:
+                  "${sensorProvided.waterUsageAllTime != null ? sensorProvided.waterUsageAllTime!.toStringAsFixed(1) : "N/A"} l",
               title: localization.waterUsageAll),
           const SizedBox(
             height: 8,

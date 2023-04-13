@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:get/get.dart';
 import 'package:irrigation/constants/bluetooth_constants.dart';
 
 class BluetoothProvider extends ChangeNotifier {
@@ -89,6 +91,11 @@ class BluetoothProvider extends ChangeNotifier {
             if (message.contains("Access granted")) {
               accessGranted = true;
               notifyListeners();
+            }
+            if (message.contains("Default scheduler s")) {
+              Get.snackbar(AppLocalizations.of(Get.context!)!.notice,
+                  AppLocalizations.of(Get.context!)!.defaultSchedulerSet,
+                  backgroundColor: Theme.of(Get.context!).cardColor);
             }
             print("Ble Value: " + utf8.decode(event));
           });

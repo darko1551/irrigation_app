@@ -10,6 +10,7 @@ SensorNoUserResponse _$SensorNoUserResponseFromJson(
         Map<String, dynamic> json) =>
     SensorNoUserResponse(
       sensorId: json['sensorId'] as int,
+      uuid: json['uuid'] as String,
       name: json['name'] as String,
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
@@ -27,13 +28,14 @@ SensorNoUserResponse _$SensorNoUserResponseFromJson(
               IrregationScheduleResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
       userId: json['userId'] as int,
-      state: json['state'] as bool,
+      state: json['state'] as bool?,
     );
 
 Map<String, dynamic> _$SensorNoUserResponseToJson(
         SensorNoUserResponse instance) =>
     <String, dynamic>{
       'sensorId': instance.sensorId,
+      'uuid': instance.uuid,
       'name': instance.name,
       'latitude': instance.latitude,
       'longitude': instance.longitude,

@@ -11,6 +11,7 @@ import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key, this.fullScreen = false});
@@ -31,6 +32,14 @@ class _MapWidgetState extends State<MapWidget> {
     if (sensor.lastActive == null) {
       return false;
     } else if (DateTime.now().difference(sensor.lastActive!).inHours > 24) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkUsed(SensorResponse sensor) {
+    if (sensor.state == null) {
       return false;
     } else {
       return true;
@@ -66,9 +75,11 @@ class _MapWidgetState extends State<MapWidget> {
                         size: 15,
                         color: !checkEnabled(sensorResponse)
                             ? Colors.grey
-                            : sensorResponse.state
-                                ? Colors.green
-                                : Colors.orange,
+                            : checkUsed(sensorResponse)
+                                ? sensorResponse.state!
+                                    ? Colors.green
+                                    : Colors.orange
+                                : Colors.grey,
                       ),
                     ),
                   ],
@@ -88,6 +99,7 @@ class _MapWidgetState extends State<MapWidget> {
     timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
+
         markers.clear();
         markers = getMarkers();
         setState(() {});

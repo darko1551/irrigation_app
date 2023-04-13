@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:irrigation/feature/home/page/home_page.dart';
 import 'package:irrigation/provider/bluetooth_provider.dart';
 import 'package:irrigation/feature/bluetooth/page/bluetooth_scan_page.dart';
 import 'package:irrigation/feature/login/login_page.dart';
@@ -27,18 +28,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   UserProvider userProviderr = UserProvider();
   await userProviderr.initClientCredentials();
-  // await userProviderr.setClientCredentials(null);
-  //ClientCredentials? clientCredentials = userProviderr.clientCredentials;
-  /* if (clientCredentials == null) {
-    //clientCredentials = await authorizeUser();
-    //userProviderr.setClientCredentials(clientCredentials);
-  }*/
 
   HttpOverrides.global = MyHttpOverrides();
   LocalizationProvider pro = LocalizationProvider();
   await pro.initLocale();
-
-  //await userProviderr.initUser();
 
   runApp(
     MultiProvider(
@@ -109,7 +102,7 @@ class _MyAppState extends State<MyApp> {
       theme: Styles.themeData(
           Provider.of<DarkThemeProvider>(context).darkTheme, context),
       locale: Provider.of<LocalizationProvider>(context).locale,
-      home: const BluetoothScanPage(),
+      home: const LoginPage(),
     );
   }
 }
