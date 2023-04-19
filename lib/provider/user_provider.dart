@@ -18,7 +18,7 @@ class UserProvider extends ChangeNotifier {
   ClientCredentials? get clientCredentials => _clientCredentials;
 
   initUser() async {
-    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 5)));
+    final dio = Dio()..options.connectTimeout = const Duration(seconds: 5);
     dio.interceptors.add(ApiInterceptor(clientCredentials: _clientCredentials));
     final apiClient = ApiClient(dio);
     List<UserResponse> users = [];

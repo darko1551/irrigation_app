@@ -44,7 +44,10 @@ abstract class ApiClient {
   Future<void> deleteSchedule(@Path() int userId, @Path() int scheduleId);
 
   @PUT(Apis.updateSchedule)
-  Future<int> updateSchedule(@Path() int userId, @Path() int scheduleId,
+  Future<int> updateSchedule(
+      @Path() int userId,
+      @Path() int sensorId,
+      @Path() int scheduleId,
       @Body() IrrigationScheduleRequest scheduleRequest);
 
   @GET(Apis.getUsers)

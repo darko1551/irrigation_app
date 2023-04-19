@@ -106,8 +106,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {
-              Provider.of<UserProvider>(context, listen: false)
+            onTap: () async {
+              await Provider.of<UserProvider>(context, listen: false)
                   .setClientCredentials(null);
               Get.offAll(() => const LoginPage());
             },

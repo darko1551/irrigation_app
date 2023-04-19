@@ -39,46 +39,70 @@ class Styles {
   );
 
   static ThemeData darkTheme = ThemeData(
-    dividerColor: Colors.white,
-    secondaryHeaderColor: const Color.fromARGB(255, 119, 211, 235),
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: Color.fromARGB(255, 41, 41, 41),
-    ),
-    hintColor: Colors.grey[400],
-    dialogTheme: const DialogTheme(
-      backgroundColor: Color.fromARGB(255, 66, 66, 66),
-      titleTextStyle: TextStyle(
-          color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-      contentTextStyle: TextStyle(color: Colors.white, fontSize: 17),
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Color.fromARGB(255, 128, 191, 226)),
-    primaryColor: const Color.fromARGB(255, 41, 41, 41),
-    cardColor: const Color.fromARGB(255, 66, 66, 66),
-    indicatorColor: Colors.cyan,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 18, 18, 18),
-    iconTheme: const IconThemeData(color: Color.fromARGB(255, 128, 191, 226)),
-    disabledColor: const Color.fromARGB(255, 192, 190, 190),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromARGB(255, 41, 41, 41),
-      foregroundColor: Colors.white,
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          const Color.fromARGB(255, 128, 191, 224),
-        ),
-        foregroundColor: MaterialStateProperty.all(
-          const Color.fromARGB(255, 18, 18, 18),
+      dividerColor: Colors.white,
+      secondaryHeaderColor: const Color.fromARGB(255, 119, 211, 235),
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: Color.fromARGB(255, 41, 41, 41),
+      ),
+      hintColor: Colors.grey[400],
+      dialogTheme: const DialogTheme(
+        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+        titleTextStyle: TextStyle(
+            color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+        contentTextStyle: TextStyle(color: Colors.white, fontSize: 17),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color.fromARGB(255, 128, 191, 226)),
+      primaryColor: const Color.fromARGB(255, 41, 41, 41),
+      cardColor: const Color.fromARGB(255, 66, 66, 66),
+      indicatorColor: Colors.cyan,
+      scaffoldBackgroundColor: const Color.fromARGB(255, 18, 18, 18),
+      iconTheme: const IconThemeData(color: Color.fromARGB(255, 128, 191, 226)),
+      disabledColor: const Color.fromARGB(255, 192, 190, 190),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 41, 41, 41),
+        foregroundColor: Colors.white,
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            const Color.fromARGB(255, 128, 191, 224),
+          ),
+          foregroundColor: MaterialStateProperty.all(
+            const Color.fromARGB(255, 18, 18, 18),
+          ),
         ),
       ),
-    ),
-    textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: Colors.white),
-        titleMedium: TextStyle(color: Colors.white)),
-  );
+      textTheme: const TextTheme(
+          bodyMedium: TextStyle(color: Colors.white),
+          titleMedium: TextStyle(color: Colors.white)),
+      datePickerTheme: DatePickerThemeData(
+        dayForegroundColor: const MaterialStatePropertyAll(Colors.white),
+        backgroundColor: const Color.fromARGB(255, 66, 66, 66),
+        headerBackgroundColor: const Color.fromARGB(255, 66, 66, 66),
+        dayBackgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return const Color.fromARGB(255, 128, 191, 224);
+          }
+        }),
+        yearForegroundColor: const MaterialStatePropertyAll(Colors.white),
+        yearOverlayColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return const Color.fromARGB(255, 128, 191, 224);
+          }
+        }),
+        weekdayStyle: const TextStyle(color: Colors.white),
+      ),
+      timePickerTheme: const TimePickerThemeData(
+        helpTextStyle: TextStyle(color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 66, 66, 66),
+        dialHandColor: Color.fromARGB(255, 128, 191, 224),
+        dialTextColor: Colors.white,
+        hourMinuteTextColor: Colors.white,
+        entryModeIconColor: Color.fromARGB(255, 128, 191, 224),
+      ));
 
-  static ThemeData themeData(bool isDarkTheme, BuildContext context) {
+  static ThemeData themeData(bool isDarkTheme) {
     if (isDarkTheme) {
       return darkTheme;
     } else {

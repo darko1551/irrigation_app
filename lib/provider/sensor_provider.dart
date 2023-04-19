@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +33,7 @@ class SensorProvider extends ChangeNotifier {
     apiClient = ApiClient(dio);
     dio.interceptors
         .add(ApiInterceptor(clientCredentials: userProvider.clientCredentials));
-    dio.interceptors.add(LogInterceptor(requestBody: true));
+    //dio.interceptors.add(LogInterceptor(requestBody: true));
     try {
       _sensorList = await apiClient.getSensors(userProvider.user.userId);
     } on DioError catch (e) {
@@ -141,14 +140,14 @@ class SensorProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<int?> editSchedule(
-      int scheduleId, IrrigationScheduleRequest scheduleRequest) async {
+  Future<int?> editSchedule(int scheduleId, int sensorId,
+      IrrigationScheduleRequest scheduleRequest) async {
     int? res;
     isLoading = true;
     notifyListeners();
     try {
       res = await apiClient.updateSchedule(
-          userProvider.user.userId, scheduleId, scheduleRequest);
+          userProvider.user.userId, sensorId, scheduleId, scheduleRequest);
     } on DioError catch (e) {
       dioExceptionHandler(e);
     }
@@ -204,7 +203,7 @@ class SensorProvider extends ChangeNotifier {
     } else {
       for (String exceptionString in ExceptionStrings.exceptionStringList) {
         if (message.contains(exceptionString)) {
-          switch (message) {
+          switch (exceptionString) {
             case ExceptionStrings.sensorDoesNotExist:
               throw localizations.sensorDoesNotExist;
             case ExceptionStrings.userDoesNotExist:

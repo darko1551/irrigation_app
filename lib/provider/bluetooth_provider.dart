@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class BluetoothProvider extends ChangeNotifier {
   late Stream<BluetoothDeviceState> bleConnectionStateStream;
   late StreamSubscription<BluetoothDeviceState> subscriptions;
   late StreamSubscription<List<int>> subscriptions2;
-  var writeService = null;
+  BluetoothService? writeService;
   bool loading = false;
   bool txEnabled = false;
   bool accessGranted = false;
@@ -97,7 +96,7 @@ class BluetoothProvider extends ChangeNotifier {
                   AppLocalizations.of(Get.context!)!.defaultSchedulerSet,
                   backgroundColor: Theme.of(Get.context!).cardColor);
             }
-            print("Ble Value: " + utf8.decode(event));
+            print("Ble Value: ${utf8.decode(event)}");
           });
         }
       }
@@ -105,7 +104,7 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   writeCommand(String command) {
-    print("BaseBluetooth -> writeCommand: " + command);
+    print("BaseBluetooth -> writeCommand: $command");
     if (writeService != null) {
       writeService!.characteristics.forEach((characteristic) async {
         if (characteristic.uuid.toString() == BluetoothConstants.RX_CHAR_UUID) {
@@ -123,7 +122,7 @@ class BluetoothProvider extends ChangeNotifier {
 
   sendCommandToDevice(List<List<int>> command,
       BluetoothCharacteristic writeCharacteristic) async {
-    print("SendCommandToDevice => commands: " + command.length.toString());
+    print("SendCommandToDevice => commands: ${command.length}");
     for (List<int> c in command) {
       try {
         await writeCharacteristic.write(c);
@@ -135,7 +134,7 @@ class BluetoothProvider extends ChangeNotifier {
 
   Future<void> stateListener(event) async {
     var bleDeviceState = event;
-    print("DeviceState:" + event.toString());
+    print("DeviceState:$event");
 
     switch (event) {
       case BluetoothDeviceState.disconnected:

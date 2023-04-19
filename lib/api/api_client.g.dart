@@ -226,6 +226,7 @@ class _ApiClient implements ApiClient {
   @override
   Future<int> updateSchedule(
     userId,
+    sensorId,
     scheduleId,
     scheduleRequest,
   ) async {

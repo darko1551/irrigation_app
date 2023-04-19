@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:get/get.dart';
 import 'package:irrigation/constants/map_constants.dart';
 import 'package:irrigation/models/response/sensor_response.dart';
 import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapDetailWidget extends StatefulWidget {
   const MapDetailWidget({super.key, required this.sensor});

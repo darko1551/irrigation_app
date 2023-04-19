@@ -63,10 +63,122 @@ class _ValveListItemState extends State<ValveListItem> {
     return Container(
       width: double.maxFinite,
       height: 85,
+      padding: const EdgeInsets.only(top: 5, left: 15),
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(15)),
-      child: Row(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              //STATUS ICON
+              widget.sensor.state == null
+                  ? Icon(
+                      Icons.circle,
+                      color: Theme.of(context).disabledColor,
+                      size: 15,
+                    )
+                  : !widget.sensor.state!
+                      ? Icon(
+                          Icons.circle,
+                          color: !checkEnabled()
+                              ? Theme.of(context).disabledColor
+                              : Colors.orange,
+                          size: 15,
+                        )
+                      : Icon(
+                          Icons.circle,
+                          color: !checkEnabled()
+                              ? Theme.of(context).disabledColor
+                              : Colors.green,
+                          size: 15,
+                        ),
+              //SENSOR NAME
+              Expanded(
+                child: Text(
+                  "  ${widget.sensor.name}",
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  //HUMIDITY
+                  TileInfoRowWidget(
+                    text:
+                        "${widget.sensor.sensorData.humidity == null ? "N/A" : widget.sensor.sensorData.humidity!.toStringAsFixed(2)} %",
+                    icon: Icons.water_drop_outlined,
+                    color: !checkEnabled()
+                        ? Theme.of(context).disabledColor
+                        : null,
+                    size: 20,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  //TEMPERATURE
+                  TileInfoRowWidget(
+                    text:
+                        "${widget.sensor.sensorData.temperature == null ? "N/A" : widget.sensor.sensorData.temperature!.toStringAsFixed(2)} °C",
+                    icon: Icons.thermostat_outlined,
+                    color: !checkEnabled()
+                        ? Theme.of(context).disabledColor
+                        : null,
+                    size: 20,
+                  ),
+                ],
+              ),
+              //SCHEDULE
+              Row(
+                children: [
+                  SizedBox(
+                    //padding: const EdgeInsets.only(top: 15),
+                    width: size.width * 0.33,
+                    child: TileInfoColumnWidget(
+                      text: _timeString == ""
+                          ? localization.noSchedule
+                          : _timeString,
+                      icon: Icons.date_range_outlined,
+                      color: !checkEnabled()
+                          ? Theme.of(context).disabledColor
+                          : null,
+                      size: 30,
+                    ),
+                  ),
+                  //WATER USAGE
+                  SizedBox(
+                    //padding: const EdgeInsets.only(top: 15),
+                    width: size.width * 0.33,
+                    child: TileInfoColumnWidget(
+                      text: widget.sensor.waterUsageLast != null
+                          ? localization.liters(double.parse(
+                              widget.sensor.waterUsageLast!.toStringAsFixed(1)))
+                          : "N/A",
+                      icon: Icons.water,
+                      color: !checkEnabled()
+                          ? Theme.of(context).disabledColor
+                          : null,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
+
+      /*Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -78,6 +190,7 @@ class _ValveListItemState extends State<ValveListItem> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //STATUS ICON
                     widget.sensor.state == null
                         ? Icon(
                             Icons.circle,
@@ -99,6 +212,7 @@ class _ValveListItemState extends State<ValveListItem> {
                                     : Colors.green,
                                 size: 15,
                               ),
+                    //SENSOR NAME
                     Expanded(
                       child: Text(
                         "  ${widget.sensor.name}",
@@ -113,6 +227,7 @@ class _ValveListItemState extends State<ValveListItem> {
                 const SizedBox(
                   height: 10,
                 ),
+                //HUMIDITY
                 TileInfoRowWidget(
                   text:
                       "${widget.sensor.sensorData.humidity == null ? "N/A" : widget.sensor.sensorData.humidity!.toStringAsFixed(2)} %",
@@ -124,6 +239,7 @@ class _ValveListItemState extends State<ValveListItem> {
                 const SizedBox(
                   height: 5,
                 ),
+                //TEMPERATURE
                 TileInfoRowWidget(
                   text:
                       "${widget.sensor.sensorData.temperature == null ? "N/A" : widget.sensor.sensorData.temperature!.toStringAsFixed(2)} °C",
@@ -135,6 +251,7 @@ class _ValveListItemState extends State<ValveListItem> {
               ],
             ),
           ),
+          //SCHEDULE
           Container(
             padding: const EdgeInsets.only(top: 15),
             width: size.width * 0.33,
@@ -145,6 +262,7 @@ class _ValveListItemState extends State<ValveListItem> {
               size: 30,
             ),
           ),
+          //WATER USAGE
           Container(
             padding: const EdgeInsets.only(top: 15),
             width: size.width * 0.33,
@@ -159,7 +277,7 @@ class _ValveListItemState extends State<ValveListItem> {
             ),
           )
         ],
-      ),
+      ),*/
     );
   }
 

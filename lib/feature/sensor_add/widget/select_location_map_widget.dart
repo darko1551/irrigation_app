@@ -155,15 +155,45 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
                     Positioned(
                       bottom: 30,
                       right: 15,
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).cardColor,
-                        child: IconButton(
-                          icon: const Icon(Icons.layers),
-                          onPressed: () {
-                            satelite = !satelite;
-                            setState(() {});
-                          },
-                        ),
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).cardColor,
+                            child: IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                _mapController.move(_mapController.center,
+                                    _mapController.zoom + 1);
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).cardColor,
+                            child: IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                _mapController.move(_mapController.center,
+                                    _mapController.zoom - 1);
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).cardColor,
+                            child: IconButton(
+                              icon: const Icon(Icons.layers),
+                              onPressed: () {
+                                satelite = !satelite;
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ]);

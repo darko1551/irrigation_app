@@ -89,10 +89,10 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
         success = true;
         Get.snackbar(
             localization.success, localization.scheduleAddedSuccessfully,
-            backgroundColor: Theme.of(context).cardColor);
+            backgroundColor: Theme.of(Get.context!).cardColor);
       } catch (e) {
         Get.snackbar(localization.warning, e.toString(),
-            backgroundColor: Theme.of(context).cardColor);
+            backgroundColor: Theme.of(Get.context!).cardColor);
       }
     }
     return success;
@@ -109,15 +109,15 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
           activated: true,
           duration: double.parse(_durationController.text));
       try {
-        await Provider.of<SensorProvider>(context, listen: false)
-            .editSchedule(widget.schedule!.id, scheduleRequest);
+        await Provider.of<SensorProvider>(context, listen: false).editSchedule(
+            widget.schedule!.id, widget.sensor!.sensorId, scheduleRequest);
         success = true;
         Get.snackbar(
             localization.success, localization.scheduleEditedSuccessfully,
-            backgroundColor: Theme.of(context).cardColor);
+            backgroundColor: Theme.of(Get.context!).cardColor);
       } catch (e) {
         Get.snackbar(localization.warning, e.toString(),
-            backgroundColor: Theme.of(context).cardColor);
+            backgroundColor: Theme.of(Get.context!).cardColor);
       }
     }
     return success;
@@ -196,30 +196,32 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: [
-                        Text(
-                          _dateFrom == null
-                              ? localization.insertDate
-                              : "${_dateFrom!.day}.${_dateFrom!.month}.${_dateFrom!.year}.",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: _dateFrom == null
-                                  ? Theme.of(context).hintColor
-                                  : null),
-                        ),
-                        Expanded(child: Container()),
-                        IconButton(
-                            onPressed: () async {
-                              _dateFrom = await showDatePicker(
-                                  context: context,
-                                  initialDate: _dateFrom ?? DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2101));
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.date_range))
-                      ],
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        _dateFrom = await showDatePicker(
+                            context: context,
+                            initialDate: _dateFrom ?? DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+                        setState(() {});
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            _dateFrom == null
+                                ? localization.insertDate
+                                : "${_dateFrom!.day}.${_dateFrom!.month}.${_dateFrom!.year}.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: _dateFrom == null
+                                    ? Theme.of(context).hintColor
+                                    : null),
+                          ),
+                          Expanded(child: Container()),
+                          const Icon(Icons.date_range)
+                        ],
+                      ),
                     ),
                   ),
 
@@ -234,30 +236,32 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: [
-                        Text(
-                          _dateTo == null
-                              ? localization.insertDate
-                              : "${_dateTo!.day}.${_dateTo!.month}.${_dateTo!.year}.",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: _dateTo == null
-                                  ? Theme.of(context).hintColor
-                                  : null),
-                        ),
-                        Expanded(child: Container()),
-                        IconButton(
-                            onPressed: () async {
-                              _dateTo = await showDatePicker(
-                                  context: context,
-                                  initialDate: _dateTo ?? DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2101));
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.date_range))
-                      ],
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        _dateTo = await showDatePicker(
+                            context: context,
+                            initialDate: _dateTo ?? DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+                        setState(() {});
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            _dateTo == null
+                                ? localization.insertDate
+                                : "${_dateTo!.day}.${_dateTo!.month}.${_dateTo!.year}.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: _dateTo == null
+                                    ? Theme.of(context).hintColor
+                                    : null),
+                          ),
+                          Expanded(child: Container()),
+                          const Icon(Icons.date_range)
+                        ],
+                      ),
                     ),
                   ),
 
@@ -272,28 +276,30 @@ class _ScheduleAddEditPageState extends State<ScheduleAddEditPage> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: [
-                        Text(
-                          _time == null
-                              ? localization.insertTime
-                              : '${_time!.hour.toString().padLeft(2, '0')}:${_time!.minute.toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: _time == null
-                                  ? Theme.of(context).hintColor
-                                  : null),
-                        ),
-                        Expanded(child: Container()),
-                        IconButton(
-                            onPressed: () async {
-                              _time = await showTimePicker(
-                                  context: context,
-                                  initialTime: _time ?? TimeOfDay.now());
-                              setState(() {});
-                            },
-                            icon: const Icon(Icons.watch_later_outlined)),
-                      ],
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        _time = await showTimePicker(
+                            context: context,
+                            initialTime: _time ?? TimeOfDay.now());
+                        setState(() {});
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            _time == null
+                                ? localization.insertTime
+                                : '${_time!.hour.toString().padLeft(2, '0')}:${_time!.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: _time == null
+                                    ? Theme.of(context).hintColor
+                                    : null),
+                          ),
+                          Expanded(child: Container()),
+                          const Icon(Icons.watch_later_outlined),
+                        ],
+                      ),
                     ),
                   ),
 

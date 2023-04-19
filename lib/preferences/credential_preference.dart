@@ -10,13 +10,13 @@ class CredentialsPreference {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (value != null) {
-      prefs.setString(ACCESS_TOKEN, value.accessToken);
-      prefs.setString(REFRESH_TOKEN, value.refreshToken);
-      prefs.setString(EXPIRATION, value.expiration.toString());
+      await prefs.setString(ACCESS_TOKEN, value.accessToken);
+      await prefs.setString(REFRESH_TOKEN, value.refreshToken);
+      await prefs.setString(EXPIRATION, value.expiration.toString());
     } else {
-      prefs.setString(ACCESS_TOKEN, "");
-      prefs.setString(REFRESH_TOKEN, "");
-      prefs.setString(EXPIRATION, "");
+      await prefs.setString(ACCESS_TOKEN, "");
+      await prefs.setString(REFRESH_TOKEN, "");
+      await prefs.setString(EXPIRATION, "");
     }
   }
 

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:get/get.dart';
@@ -62,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
           await Provider.of<UserProvider>(context, listen: false).initUser();
           clientInitialized = true;
         } catch (e) {
-          Get.snackbar("Error", e.toString(),
-              backgroundColor: Theme.of(context).cardColor);
+          Get.snackbar(localization.error, e.toString(),
+              backgroundColor: Theme.of(Get.context!).cardColor);
         }
       }
       if (clientInitialized) {
@@ -100,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                         ? () async {
                             //await Provider.of<UserProvider>(context,
                             //      listen: false)
-                            // .setClientCredentials(null);
+                            //.setClientCredentials(null);
                             bool clientInitialized = false;
                             ClientCredentials? clientCredentials =
                                 Provider.of<UserProvider>(context,
@@ -120,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                                         .initUser();
                                     clientInitialized = true;
                                   } catch (e) {
-                                    Get.snackbar("Error", e.toString(),
+                                    Get.snackbar(
+                                        localization.error, e.toString(),
                                         backgroundColor:
                                             Theme.of(context).cardColor);
                                   }

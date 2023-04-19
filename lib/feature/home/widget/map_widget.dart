@@ -11,7 +11,6 @@ import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/sensor_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key, this.fullScreen = false});
@@ -160,15 +159,45 @@ class _MapWidgetState extends State<MapWidget> {
                 ? Positioned(
                     bottom: 30,
                     right: 15,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).cardColor,
-                      child: IconButton(
-                        icon: const Icon(Icons.layers),
-                        onPressed: () {
-                          satelite = !satelite;
-                          setState(() {});
-                        },
-                      ),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              _mapController.move(_mapController.center,
+                                  _mapController.zoom + 1);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CircleAvatar(
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () {
+                              _mapController.move(_mapController.center,
+                                  _mapController.zoom - 1);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CircleAvatar(
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: IconButton(
+                            icon: const Icon(Icons.layers),
+                            onPressed: () {
+                              satelite = !satelite;
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : Container(),

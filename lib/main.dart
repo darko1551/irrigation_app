@@ -3,9 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:irrigation/feature/home/page/home_page.dart';
-import 'package:irrigation/provider/bluetooth_provider.dart';
 import 'package:irrigation/feature/bluetooth/page/bluetooth_scan_page.dart';
+import 'package:irrigation/provider/bluetooth_provider.dart';
 import 'package:irrigation/feature/login/login_page.dart';
 import 'package:irrigation/provider/dark_theme_provider.dart';
 import 'package:irrigation/provider/localization_provider.dart';
@@ -99,8 +98,9 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
         Locale('hr', ''),
       ],
-      theme: Styles.themeData(
-          Provider.of<DarkThemeProvider>(context).darkTheme, context),
+      theme:
+          Styles.themeData(Provider.of<DarkThemeProvider>(context).darkTheme),
+      //theme: Styles.themeData(true),
       locale: Provider.of<LocalizationProvider>(context).locale,
       home: const LoginPage(),
     );

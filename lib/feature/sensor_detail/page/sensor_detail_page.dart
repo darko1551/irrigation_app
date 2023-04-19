@@ -47,10 +47,11 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
         actions: [
           IconButton(
               onPressed: networkStatus
-                  ? () {
+                  ? () async {
+                      Get.back();
                       Provider.of<SensorProvider>(context, listen: false)
                           .removeSensor(widget.sensor.sensorId);
-                      Get.back();
+
                       Get.snackbar(localization!.success,
                           localization.sensorRemovedSuccessfully,
                           backgroundColor: Theme.of(context).cardColor);
@@ -67,7 +68,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
             icon: const Icon(Icons.edit),
           ),
         ],
-        title: Text(sensorProvided!.name),
+        title: Text(sensorProvided!.name ?? ""),
       ),
       body: networkStatus
           ? SingleChildScrollView(
