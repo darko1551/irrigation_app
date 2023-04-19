@@ -50,6 +50,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void initialization() async {
+    //await Provider.of<UserProvider>(context, listen: false)
+    //  .setClientCredentials(null);
+    /* var creds =
+        Provider.of<UserProvider>(context, listen: false).clientCredentials!;
+    creds.expiration = DateTime.now();
+    await Provider.of<UserProvider>(context, listen: false)
+        .setClientCredentials(creds);
+*/
     bool clientInitialized = false;
     ClientCredentials? clientCredentials =
         Provider.of<UserProvider>(context, listen: false).clientCredentials;

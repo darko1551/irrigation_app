@@ -24,6 +24,7 @@ class UserProvider extends ChangeNotifier {
     List<UserResponse> users = [];
     try {
       users = await apiClient.getUsers();
+      var nesto = users;
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectionTimeout) {
         throw ExceptionStrings.serverError;
