@@ -131,7 +131,8 @@ class _SelectLocationMapWidgetState extends State<SelectLocationMapWidget> {
                                     : snapshot.data!.longitude),
                           ),
                           zoom: 15,
-                          maxZoom: 18.45),
+                          maxZoom: 18.45,
+                          minZoom: 2),
                       children: [
                         TileLayer(
                           urlTemplate: satelite

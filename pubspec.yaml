@@ -63,6 +63,7 @@ dependencies:
   flutter_appauth: ^4.2.1
   app_settings: ^4.2.0
   flutter_blue_plus: ^1.4.0
+  permission_handler: ^10.2.0
   
 
 dev_dependencies:

@@ -165,7 +165,8 @@ class _SensorEditPageState extends State<SensorEditPage> {
                         _longitude = retrievedCoordinates.longitude.toString();
                         setState(() {});
                       }),
-                  Text("$_latitude, $_longitude")
+                  Text(
+                      "latitude: ${double.parse(_latitude).toStringAsFixed(5)}, longitude: ${double.parse(_longitude).toStringAsFixed(5)}")
                 ],
               ),
             )

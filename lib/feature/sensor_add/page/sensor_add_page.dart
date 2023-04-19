@@ -161,7 +161,7 @@ class _SensorAddPageState extends State<SensorAddPage> {
                           onPressed: () async {
                             var barcode =
                                 await Get.to(() => const QrCameraScannerPage());
-                            _macController.text = barcode;
+                            _macController.text = barcode ?? "";
                           },
                           icon: const Icon(Icons.qr_code_outlined),
                         )

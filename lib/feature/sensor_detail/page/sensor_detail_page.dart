@@ -68,7 +68,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
             icon: const Icon(Icons.edit),
           ),
         ],
-        title: Text(sensorProvided!.name ?? ""),
+        title: Text(sensorProvided != null ? sensorProvided.name : ""),
       ),
       body: networkStatus
           ? SingleChildScrollView(
@@ -82,7 +82,7 @@ class _SensorDetailPageState extends State<SensorDetailPage> {
                     ),
                     //CONNECTION
                     ConnectionInfoWidget(
-                        enabled: checkEnabled(sensorProvided),
+                        enabled: checkEnabled(sensorProvided!),
                         sensor: sensorProvided),
                     //ACTIONS
                     Text(localization!.deviceActions),

@@ -102,6 +102,7 @@ class ApiInterceptor extends QueuedInterceptor {
     clientCredentials = null;
     await Provider.of<UserProvider>(Get.context!, listen: false)
         .setClientCredentials(null);
+    _cancelToken!.cancel();
     await Get.offAll(() => const LoginPage());
   }
 }

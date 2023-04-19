@@ -326,8 +326,16 @@ class _ValveListItemState extends State<ValveListItem> {
             },
           );
           break;
+        } else {
+          setState(() {
+            _timeString = "";
+          });
         }
       }
+    } else {
+      setState(() {
+        _timeString = "";
+      });
     }
   }
 }

@@ -89,6 +89,8 @@
 "closed" : "Closed",
 "bluetoothDisabled" : "Bluetooth disabled!",
 "openBluetoothSettings" : "Open bluetooth settings",
+"locationDisabled" : "Location disabled!",
+"openLocationSettings" : "Open location settings",
 "settings" : "Settings",
 "error" : "Error",
 "notice" : "Notice",

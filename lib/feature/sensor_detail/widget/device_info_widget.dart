@@ -72,7 +72,8 @@ class DeviceInfoWidget extends StatelessWidget {
           ),
           DeviceInfoElementWidget(
               icon: Icons.location_on_outlined,
-              text: "${sensorProvided.latitude}  ${sensorProvided.longitude}",
+              text:
+                  "Latitude: ${sensorProvided.latitude.toStringAsFixed(5)}  Longitude: ${sensorProvided.longitude.toStringAsFixed(5)}",
               title: localization.location),
         ],
       ),

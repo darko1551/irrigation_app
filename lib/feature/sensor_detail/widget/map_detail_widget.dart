@@ -64,7 +64,7 @@ class _MapDetailWidgetState extends State<MapDetailWidget> {
   @override
   void initState() {
     markers = getMarkers();
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
 

@@ -95,7 +95,7 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     _mapController = MapController();
     markers = getMarkers();
-    timer = Timer.periodic(const Duration(seconds: 15), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (mounted) {
         Provider.of<SensorProvider>(context, listen: false).refreshList();
 
@@ -136,6 +136,7 @@ class _MapWidgetState extends State<MapWidget> {
               mapController: _mapController,
               options: MapOptions(
                 maxZoom: 18.45,
+                minZoom: 2,
                 onTap: (tapPosition, point) => Get.to(() => const MapPage()),
                 bounds: bounds,
               ),

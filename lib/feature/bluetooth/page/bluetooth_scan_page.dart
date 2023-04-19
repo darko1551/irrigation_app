@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:irrigation/feature/home/widget/drawer_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class BluetoothScanPage extends StatefulWidget {
   const BluetoothScanPage({super.key});
@@ -46,11 +47,37 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
     ),
   );
 
+  final noLocationSnackbar = SnackBar(
+    content: Column(
+      children: [
+        Text(
+          AppLocalizations.of(Get.context!)!.locationDisabled,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(AppLocalizations.of(Get.context!)!.openLocationSettings),
+      ],
+    ),
+    action: SnackBarAction(
+      label: AppLocalizations.of(Get.context!)!.settings,
+      onPressed: () {
+        AppSettings.openLocationSettings();
+      },
+    ),
+  );
+
   disabledBluetoothSnackbar() async {
     if (!await flutterBluePlus.isOn) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(noBluetoothSnackbar);
       }
+    }
+  }
+
+  disabledLocationSnackbar() async {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(noLocationSnackbar);
     }
   }
 
@@ -90,7 +117,12 @@ class _BluetoothScanPageState extends State<BluetoothScanPage> {
             onPressed: !scanning
                 ? () async {
                     if (await flutterBluePlus.isOn) {
-                      scanDevices();
+                      if (await Permission
+                          .locationWhenInUse.serviceStatus.isEnabled) {
+                        scanDevices();
+                      } else {
+                        disabledLocationSnackbar();
+                      }
                     } else {
                       await disabledBluetoothSnackbar();
                     }
